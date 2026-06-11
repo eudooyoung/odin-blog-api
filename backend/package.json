@@ -42,8 +42,8 @@
   "scripts": {
     "build": "prisma generate && rm -rf dist/ && tsc && cp -r src/views dist/src/ && cp -r src/public dist/src/",
     "start": "tsx dist/src/app.js",
-    "dev": "NODE_ENV=development tsx --watch src/app.ts",
-    "prod": "NODE_ENV=production tsx --watch src/app.ts"
+    "dev": "DB_ENV=development tsx --watch src/app.ts",
+    "prod": "DB_ENV=production tsx --watch src/app.ts"
   },
   "keywords": [],
   "author": "",
