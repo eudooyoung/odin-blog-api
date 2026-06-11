@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import errorHandler from "./errors/errorHandler.js";
-import v1 from "@/api/v1/routes.js";
+import v1 from "@/api/v1/route.js";
 
 export const createServer = () => {
   const app = express();
@@ -11,7 +11,7 @@ export const createServer = () => {
     .use(express.urlencoded({ extended: true }))
     .use(cors());
 
-  app.use(v1);
+  app.use("/api/v1", v1);
 
   app.use(errorHandler);
 
