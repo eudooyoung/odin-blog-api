@@ -1,17 +1,17 @@
-import dotenv from "dotenv";
+import { config } from "dotenv";
 
-dotenv.config();
+config();
 
 const dbEnv = process.env.DB_ENV || "development";
-dotenv.config({
+config({
   path: [`.env.${dbEnv}`],
   override: true,
 });
 
-const config = {
+const env = {
   port: Number(process.env.PORT),
   sessionSecret: process.env.SESSION_SECRET,
   dbUrl: process.env.DATABASE_URL,
 };
 
-export default config;
+export { env };
