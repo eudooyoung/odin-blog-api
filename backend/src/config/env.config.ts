@@ -10,7 +10,7 @@ config({
 
 const env = {
   port: Number(process.env.PORT),
-  sessionSecret: process.env.SESSION_SECRET,
+  jwtSecret: process.env.JWT_SECRET,
   dbUrl: process.env.DATABASE_URL,
   debug: process.env.APP_DEBUG === "true",
 };
