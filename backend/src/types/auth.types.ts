@@ -8,3 +8,8 @@ export interface SignupBody extends Pick<
 }
 
 export interface CreateUserInput extends Omit<SignupBody, "passwordConfirm"> {}
+
+export interface AuthUser extends Pick<
+  User,
+  "id" | "username" | "displayName"
+> {}
