@@ -4,7 +4,7 @@ import {
   findUsers,
 } from "@/repositories/user.repository.js";
 import type { CreateUserInput, SignupBody } from "@/types/auth.types.js";
-import { validateUser } from "@/lib/validates/user.validate.js";
+import { validateUser } from "@/validates/user.validate.js";
 import type { RequestHandler } from "express";
 import { matchedData, validationResult } from "express-validator";
 
