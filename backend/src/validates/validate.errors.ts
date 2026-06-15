@@ -15,3 +15,6 @@ export const passwordNumericErr = "must contain a number";
 export const passwordSpecialCharacterErr = "must contain a special character";
 export const passwordConfirmNotMatchErr = "password doesn't match";
 export const nameLengthErr = "must be between 1 and 15 characters";
+
+// comment
+export const commentLengthErr = "must be 1000 or less characters";
