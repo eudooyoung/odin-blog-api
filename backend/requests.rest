@@ -1,19 +1,5 @@
 @baseUrl=http://localhost:3000/api/v1
 
-### Get users
-GET {{baseUrl}}/users
-
-### Create user
-POST {{baseUrl}}/users 
-Content-Type: application/json
-
-{
-  "username": "test@test.com",
-  "password": "qwerQWER1234!@#$",
-  "passwordConfirm": "qwerQWER1234!@#$",
-  "displayName": "myName"
-}
-
 ### Admin Login
 # @name adminLogin
 POST {{baseUrl}}/auth/login
@@ -33,12 +19,48 @@ POST {{baseUrl}}/auth/login
 Content-type: application/json
 
 {
-  "username": "user1@user.com",
+  "username": "user2@user.com",
   "password": "qwerQWER1234!@#$"
 }
 
 ###
 @userToken = {{userLogin.response.body.$.token}}
+
+### Create user
+POST {{baseUrl}}/users 
+Content-Type: application/json
+
+{
+  "username": "test@test.com",
+  "password": "qwerQWER1234!@#$",
+  "passwordConfirm": "qwerQWER1234!@#$",
+  "displayName": "myName"
+}
+
+### Get all users
+GET {{baseUrl}}/users
+
+### Get a user
+GET {{baseUrl}}/users/2
+Authorization: {{userToken}}
+
+### Update user
+PUT {{baseUrl}}/users/2
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "displayName": "AdminName",
+  "password": "wertWERT2345@#$%",
+  "passwordConfirm": "wertWERT2345@#$%"
+}
+
+### Delete user
+DELETE {{baseUrl}}/users/3
+Authorization: {{userToken}}
+
+
+
 
 ### Get all posts
 GET {{baseUrl}}/posts

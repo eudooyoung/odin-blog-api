@@ -1,5 +1,5 @@
 import { findUserByUsername } from "@/repositories/user.repository.js";
-import type { AuthUser } from "@/types/auth.types.js";
+import type { AuthUser } from "@/types/user.types.js";
 import bcrypt from "bcryptjs";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";

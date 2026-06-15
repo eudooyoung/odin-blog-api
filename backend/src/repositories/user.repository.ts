@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma.js";
-import type { CreateUserInput } from "@/types/auth.types.js";
+import type { CreateUserInput, UpdateUserInput } from "@/types/user.types.js";
 
 export const findUsers = async () => {
   const users = await prisma.user.findMany({
@@ -14,6 +14,18 @@ export const findUserById = async (userId: number) => {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
+    },
+    omit: {
+      password: true,
+    },
+  });
+  return user;
+};
+
+export const findUserByUsername = async (username: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
     },
   });
   return user;
@@ -47,11 +59,25 @@ export const createUser = async ({
   return user;
 };
 
-export const findUserByUsername = async (username: string) => {
-  const user = await prisma.user.findUnique({
+export const updateUserById = async (
+  id: number,
+  { displayName, password }: UpdateUserInput,
+) => {
+  await prisma.user.update({
+    data: {
+      displayName,
+      password,
+    },
     where: {
-      username,
+      id,
     },
   });
-  return user;
+};
+
+export const deleteUserById = async (id: number) => {
+  await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
 };

@@ -1,4 +1,4 @@
-import type { AuthUser } from "@/types/auth.types.js";
+import type { AuthUser } from "@/types/user.types.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import fs from "node:fs";
 import path from "node:path";
