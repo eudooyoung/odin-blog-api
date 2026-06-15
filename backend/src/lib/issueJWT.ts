@@ -7,7 +7,7 @@ const PRIV_KEY = fs.readFileSync(
   path.resolve(import.meta.dirname, "../../secrets/id_rsa_priv.pem"),
 );
 
-export const issueJwt = (user: AuthUser) => {
+export const issueJWT = (user: AuthUser) => {
   const id = user.id;
   const expiresIn = "1h";
   const payload: JwtPayload = {

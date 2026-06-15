@@ -1,8 +1,4 @@
-import {
-  createUser,
-  findUser,
-  findUsers,
-} from "@/repositories/user.repository.js";
+import { createUser, findUsers } from "@/repositories/user.repository.js";
 import type { CreateUserInput, SignupBody } from "@/types/auth.types.js";
 import { validateUser } from "@/validates/user.validate.js";
 import type { RequestHandler } from "express";
@@ -11,12 +7,6 @@ import { matchedData, validationResult } from "express-validator";
 export const getUsers: RequestHandler = async (req, res) => {
   const users = await findUsers();
   res.json(users);
-};
-
-export const getUser: RequestHandler = async (req, res) => {
-  const { userId } = req.params;
-  const user = await findUser(Number(userId));
-  res.json(user);
 };
 
 const insertUserHandler: RequestHandler = async (req, res) => {

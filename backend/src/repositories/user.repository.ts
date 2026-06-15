@@ -2,11 +2,15 @@ import { prisma } from "@/lib/prisma.js";
 import type { CreateUserInput } from "@/types/auth.types.js";
 
 export const findUsers = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    omit: {
+      password: true,
+    },
+  });
   return users;
 };
 
-export const findUser = async (userId: number) => {
+export const findUserById = async (userId: number) => {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
