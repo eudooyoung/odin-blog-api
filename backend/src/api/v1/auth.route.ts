@@ -10,12 +10,4 @@ authRouter.post(
   loginHandler,
 );
 
-authRouter.get(
-  "/protected",
-  passport.authenticate("jwt", { session: false }) as RequestHandler,
-  (req, res) => {
-    res.json(req.user);
-  },
-);
-
 export default authRouter;

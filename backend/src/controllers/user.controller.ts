@@ -4,7 +4,7 @@ import { validateUser } from "@/validates/user.validate.js";
 import type { RequestHandler } from "express";
 import { matchedData, validationResult } from "express-validator";
 
-export const getUsers: RequestHandler = async (req, res) => {
+export const getAllUsers: RequestHandler = async (req, res) => {
   const users = await findUsers();
   res.json(users);
 };

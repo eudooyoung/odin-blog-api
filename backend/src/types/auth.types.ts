@@ -11,5 +11,5 @@ export interface CreateUserInput extends Omit<SignupBody, "passwordConfirm"> {}
 
 export interface AuthUser extends Pick<
   User,
-  "id" | "username" | "displayName"
+  "id" | "username" | "displayName" | "role"
 > {}
