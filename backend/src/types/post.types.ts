@@ -1,14 +1,11 @@
 import type { Post } from "@/generated/prisma/client.js";
 
-export interface PostBody extends Pick<
-  Post,
-  "title" | "content" | "published"
-> {}
+export type PostBody = Pick<Post, "title" | "content" | "published">;
 
-export interface CreatePostInput extends PostBody {
+export type CreatePostInput = PostBody & {
   authorId: number;
-}
+};
 
-export interface UpdatePostInput extends PostBody {
+export type UpdatePostInput = PostBody & {
   id: number;
-}
+};

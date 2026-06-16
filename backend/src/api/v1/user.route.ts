@@ -7,7 +7,7 @@ import {
 } from "@/controllers/user.controller.js";
 import {
   requireAdmin,
-  requireSelfOrAdmin,
+  requireOwnerOrAdmin,
 } from "@/middlewares/auth.middleware.js";
 import { Router } from "express";
 
@@ -16,8 +16,8 @@ userRouter.post("/", insertUser);
 
 userRouter
   .get("/", requireAdmin, getAllUsers)
-  .get("/:userId", requireSelfOrAdmin, getUser)
-  .put("/:userId", requireSelfOrAdmin, updateUser)
-  .delete("/:userId", requireSelfOrAdmin, deleteUser);
+  .get("/:userId", requireOwnerOrAdmin, getUser)
+  .put("/:userId", requireOwnerOrAdmin, updateUser)
+  .delete("/:userId", requireOwnerOrAdmin, deleteUser);
 
 export default userRouter;

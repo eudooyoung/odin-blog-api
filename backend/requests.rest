@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
   "username": "admin@admin.com",
-  "password": "qwerQWER1234!@#$"
+  "password": "wertWERT2345@#$%"
 }
 
 ### 
@@ -115,5 +115,9 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-  "content": "Hello Modified Comments!"
+  "content": "Hello Modified Comments Again!"
 }
+
+### Delete comment
+DELETE {{baseUrl}}/comments/1
+Authorization: {{adminToken}}
