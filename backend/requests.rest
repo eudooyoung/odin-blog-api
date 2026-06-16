@@ -1,0 +1,123 @@
+@baseUrl=http://localhost:3000/api/v1
+
+### Admin Login
+# @name adminLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@admin.com",
+  "password": "wertWERT2345@#$%"
+}
+
+### 
+@adminToken = {{adminLogin.response.body.$.token}}
+
+### User Login
+# @name userLogin
+POST {{baseUrl}}/auth/login
+Content-type: application/json
+
+{
+  "username": "user2@user.com",
+  "password": "qwerQWER1234!@#$"
+}
+
+###
+@userToken = {{userLogin.response.body.$.token}}
+
+### Create user
+POST {{baseUrl}}/users 
+Content-Type: application/json
+
+{
+  "username": "test@test.com",
+  "password": "qwerQWER1234!@#$",
+  "passwordConfirm": "qwerQWER1234!@#$",
+  "displayName": "myName"
+}
+
+### Get all users
+GET {{baseUrl}}/users
+
+### Get a user
+GET {{baseUrl}}/users/2
+Authorization: {{userToken}}
+
+### Update user
+PUT {{baseUrl}}/users/2
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "displayName": "AdminName",
+  "password": "wertWERT2345@#$%",
+  "passwordConfirm": "wertWERT2345@#$%"
+}
+
+### Delete user
+DELETE {{baseUrl}}/users/3
+Authorization: {{userToken}}
+
+
+
+
+### Get all posts
+GET {{baseUrl}}/posts
+
+### Create post
+POST {{baseUrl}}/posts
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "First Post",
+  "content": "Hello, Blog!",
+  "published": true
+}
+
+### Update post
+PUT {{baseUrl}}/posts/1
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Updated First Post",
+  "content": "Hello again, Blog!",
+  "published": true
+}
+
+### Delete post
+DELETE {{baseUrl}}/posts/1
+Authorization: {{adminToken}}
+
+
+
+### Create comment
+POST {{baseUrl}}/posts/2/comments
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "content": "Hello second comments!"
+}
+
+### Get all comments
+GET {{baseUrl}}/comments
+Authorization: {{adminToken}}
+
+### Get comments of a post
+GET {{baseUrl}}/posts/2/comments
+
+### Update comment
+PUT {{baseUrl}}/comments/1
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "content": "Hello Modified Comments Again!"
+}
+
+### Delete comment
+DELETE {{baseUrl}}/comments/1
+Authorization: {{adminToken}}
