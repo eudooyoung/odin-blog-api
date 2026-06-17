@@ -8,6 +8,6 @@ export type Post = {
   title: string;
   content: string;
   published: boolean;
-  createdAt: Date;
+  createdAt: string;
   authorId: number;
 };

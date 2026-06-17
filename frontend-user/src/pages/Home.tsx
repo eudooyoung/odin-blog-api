@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 const Home = () => {
   const { posts, postError, postLoading } = useBlogApi();
-  console.log(posts);
 
   return (
     <>
@@ -15,7 +14,17 @@ const Home = () => {
         {postError && <span>{postError.message}</span>}
         <div>
           {posts.map((post) => (
-            <div key={post.id}>{post.title}</div>
+            <section key={post.id}>
+              <h4>
+                <a href="">{post.title}</a>
+              </h4>
+              <p>{post.content}</p>
+              <footer>
+                {new Intl.DateTimeFormat("ko-KR", {
+                  dateStyle: "short",
+                }).format(new Date(post.createdAt))}
+              </footer>
+            </section>
           ))}
         </div>
       </section>
@@ -43,6 +52,7 @@ const useBlogApi = () => {
         }
 
         const posts = await response.json();
+
         setPosts(posts);
       } catch (error) {
         if (error instanceof Error) {
