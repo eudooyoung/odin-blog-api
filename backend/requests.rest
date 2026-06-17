@@ -23,6 +23,10 @@ Content-type: application/json
   "password": "qwerQWER1234!@#$"
 }
 
+### Get auth status
+GET {{baseUrl}}/auth/status
+Authorization: {{adminToken}}
+
 ###
 @userToken = {{userLogin.response.body.$.token}}
 
@@ -71,8 +75,8 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-  "title": "First Post",
-  "content": "Hello, Blog!",
+  "title": "Third Post",
+  "content": "Hello, Blog 3!",
   "published": true
 }
 
