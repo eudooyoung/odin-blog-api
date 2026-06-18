@@ -1,3 +1,6 @@
+import type { SetStateAction } from "react";
+import type React from "react";
+
 export type Page = {
   name: string;
   to: string;
@@ -17,4 +20,13 @@ export type User = {
   username: string;
   displayName: string;
   role: "ADMIN" | "USER";
+};
+
+export type AuthContextValue = {
+  user: User | undefined;
+  setUser: React.Dispatch<SetStateAction<User | undefined>>;
+  userError: Error | null;
+  userLoading: boolean;
+  token: string | null;
+  setToken: React.Dispatch<SetStateAction<string | null>>;
 };

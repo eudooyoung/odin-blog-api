@@ -1,27 +1,20 @@
-import { env } from "@/config/env.ts";
+import { AuthContext } from "@/contexts/authContext.ts";
+import { env } from "@/lib/env";
 import type { User } from "@/types/types.ts";
-import { createContext, useEffect, useState, type ReactNode } from "react";
-
-const AuthContext = createContext<{
-  user: User | undefined;
-  userError: Error | null;
-  userLoading: boolean;
-} | null>(null);
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { user, userError, userLoading } = useAuth();
-
-  return (
-    <AuthContext value={{ user, userError, userLoading }}>
-      {children}
-    </AuthContext>
-  );
+  return <AuthContext value={useAuth()}>{children}</AuthContext>;
 };
 
 const useAuth = () => {
   const [user, setUser] = useState<User>();
   const [userError, setUserError] = useState<Error | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const reqHeaders = useMemo(() => {
+    return token ? new Headers({ Authorization: token }) : new Headers();
+  }, [token]);
 
   useEffect(() => {
     const abrtController = new AbortController();
@@ -31,13 +24,14 @@ const useAuth = () => {
         const response = await fetch(`${env.apiBaseUrl}/auth/status`, {
           method: "get",
           signal: abrtController.signal,
+          headers: reqHeaders,
         });
 
         if (!response.ok) {
           throw new Error(`Server Error: ${response.status}`);
         }
 
-        const user = await response.json();
+        const { user } = await response.json();
         setUser(user);
       } catch (error) {
         if (error instanceof Error) {
@@ -56,7 +50,7 @@ const useAuth = () => {
     return () => {
       abrtController.abort();
     };
-  }, []);
+  }, [reqHeaders]);
 
-  return { user, userError, userLoading };
+  return { user, setUser, userError, userLoading, token, setToken };
 };

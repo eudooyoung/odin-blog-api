@@ -1,21 +1,38 @@
-import { env } from "@/config/env.ts";
-import { useState, type SubmitEventHandler } from "react";
+import { AuthContext } from "@/contexts/authContext.ts";
+import { env } from "@/lib/env";
+import { useContext, useState, type SubmitEventHandler } from "react";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser, setToken } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const loginHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${env.apiBaseUrl}/auth/login`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    const { user, token } = await response.json();
-    localStorage.setItem("token", token);
+    try {
+      const response = await fetch(`${env.apiBaseUrl}/auth/login`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const { user, token } = data;
+      localStorage.setItem("token", token);
+      setUser(user);
+      setToken(token);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

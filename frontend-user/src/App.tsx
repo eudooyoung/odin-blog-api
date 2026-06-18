@@ -1,7 +1,7 @@
 import Footer from "./components/Footer.tsx";
 import Header from "./components/Header.tsx";
 import Main from "./components/Main.tsx";
-import { AuthProvider } from "./hooks/AuthContext.tsx";
+import { AuthProvider } from "./hooks/AuthProvider.tsx";
 
 export default function App() {
   return (

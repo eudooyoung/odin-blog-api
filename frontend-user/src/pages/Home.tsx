@@ -1,4 +1,4 @@
-import { env } from "@/config/env";
+import { env } from "@/lib/env";
 import type { Post } from "@/types/types.ts";
 import { useEffect, useState } from "react";
 
