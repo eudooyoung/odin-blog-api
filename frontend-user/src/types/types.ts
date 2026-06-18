@@ -11,3 +11,10 @@ export type Post = {
   createdAt: string;
   authorId: number;
 };
+
+export type User = {
+  id: number;
+  username: string;
+  displayName: string;
+  role: "ADMIN" | "USER";
+};
