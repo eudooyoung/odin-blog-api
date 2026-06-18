@@ -15,6 +15,8 @@ export type Post = {
   authorId: number;
 };
 
+export type Posts = Post[];
+
 export type User = {
   id: number;
   username: string;
@@ -23,8 +25,8 @@ export type User = {
 };
 
 export type AuthContextValue = {
-  user: User | undefined;
-  setUser: React.Dispatch<SetStateAction<User | undefined>>;
+  user: User | null;
+  setUser: React.Dispatch<SetStateAction<User | null>>;
   userError: Error | null;
   userLoading: boolean;
   token: string | null;
