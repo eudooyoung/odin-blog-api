@@ -6,13 +6,13 @@ export const useAsync = <T>(url: string) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const abrtController = new AbortController();
 
     void (async () => {
       try {
         const response = await fetch(url, {
           method: "get",
-          signal: controller.signal,
+          signal: abrtController.signal,
         });
 
         if (!response.ok) {
@@ -30,14 +30,14 @@ export const useAsync = <T>(url: string) => {
           setError(error);
         }
       } finally {
-        if (!controller.signal.aborted) {
+        if (!abrtController.signal.aborted) {
           setLoading(false);
         }
       }
     })();
 
     return () => {
-      controller.abort();
+      abrtController.abort();
     };
   }, [url]);
 

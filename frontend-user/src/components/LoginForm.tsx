@@ -6,12 +6,18 @@ import { useNavigate } from "react-router";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginLoading, setLoginLoading] = useState(false);
   const { setUser, setToken } = useAuthContext();
   const navigate = useNavigate();
 
   const loginHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
     try {
+      setLoginLoading(true);
+      setLoginError(null);
+
       const response = await fetch(`${env.apiBaseUrl}/auth/login`, {
         method: "post",
         headers: {
@@ -22,7 +28,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
+        throw new Error(`Server error: ${data.message}`);
       }
 
       const { user, token } = data;
@@ -31,7 +37,11 @@ const LoginForm = () => {
       setToken(token);
       navigate("/");
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        setLoginError(error.message);
+      }
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -43,6 +53,7 @@ const LoginForm = () => {
         name="username"
         id="username"
         onChange={(e) => setUsername(e.target.value)}
+        required
       />
       <label htmlFor="password">password</label>
       <input
@@ -50,8 +61,12 @@ const LoginForm = () => {
         name="password"
         id="password"
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
-      <button type="submit">로그인</button>
+      <button type="submit" disabled={loginLoading}>
+        로그인
+      </button>
+      {loginError && <p>{loginError}</p>}
     </form>
   );
 };
