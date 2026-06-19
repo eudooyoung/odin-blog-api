@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useAsync = <T>(url: string) => {
+export const useFetch = <T>(url: string) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);

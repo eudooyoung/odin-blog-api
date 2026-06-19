@@ -19,6 +19,11 @@ export const useAuthState = () => {
           headers: token ? { Authorization: token } : {},
         });
 
+        if (response.status === 401) {
+          setUser(null);
+          return;
+        }
+
         if (!response.ok) {
           throw new Error(`Server Error: ${response.status}`);
         }

@@ -1,4 +1,4 @@
-import { useAsync } from "@/hooks/useAsync.ts";
+import { useFetch } from "@/hooks/useFetch.ts";
 import { env } from "@/lib/env.ts";
 import type { Posts } from "@/types/types.ts";
 
@@ -7,7 +7,7 @@ const PostList = () => {
     data: posts,
     error: postError,
     loading: postLoading,
-  } = useAsync<Posts>(`${env.apiBaseUrl}/posts`);
+  } = useFetch<Posts>(`${env.apiBaseUrl}/posts`);
 
   return (
     <section>

@@ -64,7 +64,7 @@ const LoginForm = () => {
         required
       />
       <button type="submit" disabled={loginLoading}>
-        로그인
+        login
       </button>
       {loginError && <p>{loginError}</p>}
     </form>

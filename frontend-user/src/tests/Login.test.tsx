@@ -15,7 +15,7 @@ vi.mock("@/pages/Home.tsx", () => ({
   default: () => <h2>Home</h2>,
 }));
 
-describe("Login Form Component", () => {
+describe("Login Page", () => {
   it("login pending", async () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockImplementation(
@@ -27,11 +27,11 @@ describe("Login Form Component", () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/ });
+    const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
-    const passwordInput = screen.getByLabelText(/password/);
+    const passwordInput = screen.getByLabelText(/password/i);
     await user.type(passwordInput, "testpassword");
-    const loginButton = screen.getByRole("button", { name: /로그인/ });
+    const loginButton = screen.getByRole("button", { name: /login/i });
     await user.click(loginButton);
 
     expect(loginButton).toBeDisabled();
@@ -59,11 +59,11 @@ describe("Login Form Component", () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/ });
+    const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
     const passwordInput = screen.getByLabelText(/password/);
     await user.type(passwordInput, "testpassword");
-    const loginButton = screen.getByRole("button", { name: /로그인/ });
+    const loginButton = screen.getByRole("button", { name: /login/i });
     await user.click(loginButton);
 
     const homeTitle = await screen.findByRole("heading", { name: /home/i });
@@ -88,15 +88,15 @@ describe("Login Form Component", () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/ });
+    const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
-    const passwordInput = screen.getByLabelText(/password/);
+    const passwordInput = screen.getByLabelText(/password/i);
     await user.type(passwordInput, "testpassword");
-    const loginButton = screen.getByRole("button", { name: /로그인/ });
+    const loginButton = screen.getByRole("button", { name: /login/i });
     await user.click(loginButton);
 
     const errorMessage = await screen.findByText(
-      /Invalid username or password/,
+      /Invalid username or password/i,
     );
     expect(errorMessage).toBeInTheDocument();
   });
