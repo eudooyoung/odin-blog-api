@@ -5,6 +5,12 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
+vi.mock("@/hooks/useAuthContext.ts", () => ({
+  useAuthContext: () => ({
+    setUser: vi.fn(),
+    setToken: vi.fn(),
+  }),
+}));
 vi.mock("@/pages/Home.tsx", () => ({
   default: () => <h2>Home</h2>,
 }));

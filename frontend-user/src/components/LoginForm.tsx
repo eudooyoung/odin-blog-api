@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<Error | null>(null);
   const [loginLoading, setLoginLoading] = useState(false);
   const { setUser, setToken } = useAuthContext();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const LoginForm = () => {
       navigate("/");
     } catch (error) {
       if (error instanceof Error) {
-        setLoginError(error.message);
+        setLoginError(error);
       }
     } finally {
       setLoginLoading(false);
@@ -53,6 +53,7 @@ const LoginForm = () => {
         name="username"
         id="username"
         onChange={(e) => setUsername(e.target.value)}
+        autoFocus
         required
       />
       <label htmlFor="password">password</label>
@@ -66,7 +67,7 @@ const LoginForm = () => {
       <button type="submit" disabled={loginLoading}>
         login
       </button>
-      {loginError && <p>{loginError}</p>}
+      {loginError && <p>{loginError.message}</p>}
     </form>
   );
 };

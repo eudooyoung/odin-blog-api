@@ -32,3 +32,10 @@ export type AuthContextValue = {
   token: string | null;
   setToken: React.Dispatch<SetStateAction<string | null>>;
 };
+
+export type SignupBody = {
+  username: string;
+  password: string;
+  passwordConfirm: string;
+  displayName: string;
+};
