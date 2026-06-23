@@ -39,10 +39,10 @@ describe("Signup page", () => {
 
     const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/password$/i);
-    await user.type(pwInput, "qwerQWER1234!@#$");
-    const pwConfirmInput = screen.getByLabelText(/confirm$/i);
-    await user.type(pwConfirmInput, "qwerQWER1234!@#$");
+    const pwInput = screen.getByLabelText(/^password/i);
+    await user.type(pwInput, "test-password");
+    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
+    await user.type(pwConfirmInput, "test-password");
     const displayNameInput = screen.getByRole("textbox", {
       name: /display name/i,
     });
@@ -63,10 +63,7 @@ describe("Signup page", () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
         status: 500,
-        json: () =>
-          Promise.resolve({
-            message: "username is already in use",
-          }),
+        json: () => {},
       } as Response);
     });
     render(
@@ -77,10 +74,10 @@ describe("Signup page", () => {
 
     const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/password$/i);
-    await user.type(pwInput, "qwerQWER1234!@#$");
-    const pwConfirmInput = screen.getByLabelText(/confirm$/i);
-    await user.type(pwConfirmInput, "qwerQWER1234!@#$");
+    const pwInput = screen.getByLabelText(/^password/i);
+    await user.type(pwInput, "test-password");
+    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
+    await user.type(pwConfirmInput, "test-password");
     const displayNameInput = screen.getByRole("textbox", {
       name: /display name/i,
     });
@@ -88,14 +85,50 @@ describe("Signup page", () => {
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
-    const errorMessage = await screen.findByText(/username is already in use/);
+    const errorMessage = await screen.findByText(/server error/i);
     expect(errorMessage).toBeInTheDocument();
   });
 
-  it("client error", async () => {
+  it("validation error", async () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
-      return Promise.reject(new Error("client error"));
+      return Promise.resolve({
+        status: 400,
+        ok: false,
+        json: () => {
+          return Promise.resolve({
+            errors: [{ path: "username", msg: "username already in use" }],
+          });
+        },
+      } as Response);
+    });
+    render(
+      <MemoryRouter>
+        <Signup />
+      </MemoryRouter>,
+    );
+
+    const usernameInput = screen.getByRole("textbox", { name: /username/i });
+    await user.type(usernameInput, "test@test.com");
+    const pwInput = screen.getByLabelText(/^password/i);
+    await user.type(pwInput, "test-password");
+    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
+    await user.type(pwConfirmInput, "test-password");
+    const displayNameInput = screen.getByRole("textbox", {
+      name: /display name/i,
+    });
+    await user.type(displayNameInput, "test-display");
+    const signupButton = screen.getByRole("button", { name: /signup/i });
+    await user.click(signupButton);
+
+    const errorMessage = await screen.findByText(/already in use/i);
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  it("fetch error", async () => {
+    const user = userEvent.setup();
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.reject(new Error("fetch error"));
     });
     render(
       <MemoryRouter>
@@ -104,10 +137,10 @@ describe("Signup page", () => {
     );
     const usernameInput = screen.getByRole("textbox", { name: /username/i });
     await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/password$/i);
-    await user.type(pwInput, "qwerQWER1234!@#$");
-    const pwConfirmInput = screen.getByLabelText(/confirm$/i);
-    await user.type(pwConfirmInput, "qwerQWER1234!@#$");
+    const pwInput = screen.getByLabelText(/^password/i);
+    await user.type(pwInput, "test-password");
+    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
+    await user.type(pwConfirmInput, "test-password");
     const displayNameInput = screen.getByRole("textbox", {
       name: /display name/i,
     });
@@ -115,7 +148,7 @@ describe("Signup page", () => {
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
-    const errorMessage = await screen.findByText(/client error/);
+    const errorMessage = await screen.findByText(/fetch error/);
     expect(errorMessage).toBeInTheDocument();
   });
 });

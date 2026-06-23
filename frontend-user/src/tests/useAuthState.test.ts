@@ -1,8 +1,12 @@
 import { useAuthState } from "@/hooks/useAuthState.ts";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("useAuthState hook", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   it("authenticate success", async () => {
     localStorage.setItem("token", "test-token");
     const mockUser = { id: 1, username: "test" };

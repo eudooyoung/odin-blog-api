@@ -1,12 +1,12 @@
-import type { Page } from "@/types/types.ts";
+import type { Links } from "@/types/types.ts";
 import { NavLink } from "react-router";
 
-const NavBar = ({ pages }: { pages: Page[] }) => {
+const NavBar = ({ links }: { links: Links }) => {
   return (
     <nav>
-      {pages.map((page, idx) => (
-        <NavLink key={idx} to={page.to}>
-          {page.name}
+      {links.map((link, idx) => (
+        <NavLink key={idx} to={link.to}>
+          {link.name}
         </NavLink>
       ))}
     </nav>

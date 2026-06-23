@@ -25,12 +25,13 @@ const LoginForm = () => {
         },
         body: JSON.stringify({ username, password }),
       });
-      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(`Server error: ${data.message}`);
+        const message = await response.text();
+        throw new Error(`Server error: ${message}`);
       }
 
+      const data = await response.json();
       const { user, token } = data;
       localStorage.setItem("token", token);
       setUser(user);

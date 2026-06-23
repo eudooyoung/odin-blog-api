@@ -1,6 +1,7 @@
 import NavBar from "./NavBar.tsx";
-import { authPages, publicPages } from "@/lib/page.ts";
+import { authLinks, publicLinks } from "@/lib/link.ts";
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
+import LogoutButton from "./LogoutButton.tsx";
 
 const Header = () => {
   const { user, token } = useAuthContext();
@@ -8,8 +9,9 @@ const Header = () => {
   return (
     <header>
       <h1>Doolog</h1>
-      <NavBar pages={token ? authPages : publicPages} />
+      <NavBar links={token ? authLinks : publicLinks} />
       {user && <p>Hello, {user.displayName}</p>}
+      {token && <LogoutButton />}
     </header>
   );
 };

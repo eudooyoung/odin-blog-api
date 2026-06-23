@@ -3,8 +3,8 @@ import App from "../App.tsx";
 import Home from "@/pages/Home.tsx";
 import Login from "@/pages/Login.tsx";
 import Signup from "@/pages/Signup.tsx";
-import Dashboard from "@/pages/Dashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
+import Profile from "@/pages/Profile.tsx";
 
 const routes = [
   {
@@ -12,11 +12,11 @@ const routes = [
     element: <App />,
     children: [
       { index: true, element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/signup", element: <Signup /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <Signup /> },
       {
         element: <ProtectedRoute />,
-        children: [{ path: "/dashboard", element: <Dashboard /> }],
+        children: [{ path: "profile", element: <Profile /> }],
       },
     ],
   },

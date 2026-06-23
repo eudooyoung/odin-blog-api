@@ -76,10 +76,7 @@ describe("Login Page", () => {
       return Promise.resolve({
         ok: false,
         status: 401,
-        json: () =>
-          Promise.resolve({
-            message: "Invalid username or password",
-          }),
+        text: () => Promise.resolve("Invalid username or password"),
       } as Response);
     });
     render(

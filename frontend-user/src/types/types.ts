@@ -1,10 +1,12 @@
 import type { SetStateAction } from "react";
 import type React from "react";
 
-export type Page = {
+export type Link = {
   name: string;
   to: string;
 };
+
+export type Links = Link[];
 
 export type Post = {
   id: number;
@@ -36,6 +38,22 @@ export type AuthContextValue = {
 export type SignupBody = {
   username: string;
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
   displayName: string;
+};
+
+export type SignupError = {
+  username?: string;
+  password?: string;
+  confirmPassword?: string;
+  displayName?: string;
+};
+
+export type SignupValidationError = {
+  path: string;
+  msg: string;
+};
+
+export type SignupValidationResponse = {
+  errors: SignupValidationError[];
 };
