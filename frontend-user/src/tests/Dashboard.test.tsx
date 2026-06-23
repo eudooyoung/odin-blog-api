@@ -35,4 +35,6 @@ describe("Dashboard Page", () => {
     expect(homeTitle).toBeInTheDocument();
     expect(localStorage.getItem("token")).toBeNull();
   });
+
+  it("user info update", async () => {});
 });

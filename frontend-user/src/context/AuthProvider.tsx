@@ -1,4 +1,4 @@
-import { AuthContext } from "@/contexts/authContext.ts";
+import { AuthContext } from "@/context/AuthContext.ts";
 import { type ReactNode } from "react";
 import { useAuthState } from "../hooks/useAuthState.ts";
 

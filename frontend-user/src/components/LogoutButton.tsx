@@ -12,6 +12,6 @@ const LogoutButton = () => {
     setToken(null);
     navigate("/");
   };
-  return <button onClick={logoutHandler}>LogoutButton</button>;
+  return <button onClick={logoutHandler}>Logout</button>;
 };
 export default LogoutButton;
