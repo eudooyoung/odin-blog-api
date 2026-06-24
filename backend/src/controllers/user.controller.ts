@@ -31,9 +31,7 @@ export const getUser: RequestHandler = async (req, res) => {
 const insertUserHandler: RequestHandler = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json({ errors: errors.array(), prev: req.body as UserBody });
+    return res.status(400).json({ errors: errors.array() });
   }
   const { username, password, displayName }: CreateUserInput = matchedData(req);
   const user = await createUser({ username, password, displayName });
@@ -45,9 +43,7 @@ export const insertUser = [...validateCreateUser, insertUserHandler];
 const updateUserHandler: RequestHandler = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json({ errors: errors.array(), prev: req.body as UpdateUserBody });
+    return res.status(400).json({ errors: errors.array() });
   }
   const userInput: UpdateUserInput = matchedData(req);
   await updateUserById(req.user!.id, userInput);
