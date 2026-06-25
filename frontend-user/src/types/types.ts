@@ -1,6 +1,12 @@
 import type { SetStateAction } from "react";
 import type React from "react";
 
+export type FetchWithAuthOption = {
+  method: string;
+  signal?: AbortSignal;
+  headers?: HeadersInit;
+};
+
 export type Link = {
   name: string;
   to: string;

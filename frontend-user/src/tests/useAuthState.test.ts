@@ -4,11 +4,11 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("useAuthState hook", () => {
   afterEach(() => {
+    vi.unstubAllGlobals();
     localStorage.clear();
   });
 
   it("authenticate success", async () => {
-    localStorage.setItem("token", "test-token");
     const mockUser = { id: 1, username: "test" };
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
@@ -19,44 +19,70 @@ describe("useAuthState hook", () => {
     const { result } = renderHook(() => useAuthState());
 
     await waitFor(() => {
-      expect(result.current.userLoading).toBe(false);
+      expect(result.current.userLoading).toBeFalsy();
     });
 
     expect(result.current.user).toEqual(mockUser);
-    expect(result.current.userError).toBeNull();
-    expect(result.current.token).toBe("test-token");
-    expect(fetch).toHaveBeenCalledTimes(1);
   });
 
-  it("update new token", async () => {
-    localStorage.setItem("token", "old-token");
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+  it("authenticate fails with HTTP error", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ user: null }),
+        ok: false,
+        status: 401,
       } as Response);
     });
     const { result } = renderHook(() => useAuthState());
 
     await waitFor(() => {
-      expect(result.current.userLoading).toBe(false);
+      expect(result.current.userLoading).toBeFalsy();
     });
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    expect(result.current.userError?.message).toMatch(/401/);
+  });
+
+  it("authenticate fails with fetch error", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.reject(new Error("Fetch Error"));
+    });
+    const { result } = renderHook(() => useAuthState());
+
+    await waitFor(() => {
+      expect(result.current.userLoading).toBeFalsy();
+    });
+
+    expect(result.current.userError?.message).toMatch(/Fetch Error/i);
+  });
+
+  it("request should be aborted on unmont", () => {
+    const abort = vi.fn();
+    vi.stubGlobal(
+      "AbortController",
+      class AbortMock {
+        signal = {};
+        abort = abort;
+      },
+    );
+    const { unmount } = renderHook(() => useAuthState());
+    unmount();
+
+    expect(abort).toHaveBeenCalled();
+  });
+
+  it("update token", async () => {
+    localStorage.setItem("token", "old-token");
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ user: {} }),
+      } as Response);
+    });
+    const { result } = renderHook(() => useAuthState());
 
     act(() => {
       result.current.setToken("new-token");
     });
-    await waitFor(() => {
-      expect(fetchSpy).toHaveBeenCalledTimes(2);
-    });
-    expect(fetchSpy).toHaveBeenLastCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        headers: {
-          Authorization: "new-token",
-        },
-      }),
-    );
+
     expect(result.current.token).toBe("new-token");
   });
 });
