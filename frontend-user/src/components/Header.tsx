@@ -4,14 +4,18 @@ import { useAuthContext } from "@/hooks/useAuthContext.ts";
 import LogoutButton from "./LogoutButton.tsx";
 
 const Header = () => {
-  const { user, token } = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <header>
       <h1>Doolog</h1>
-      <NavBar links={token ? authLinks : publicLinks} />
-      {user && <p>Hello, {user.displayName}</p>}
-      {token && <LogoutButton />}
+      <NavBar links={user ? authLinks : publicLinks} />
+      {user && (
+        <>
+          <p>Hello, {user.displayName}</p>
+          <LogoutButton />
+        </>
+      )}
     </header>
   );
 };

@@ -7,6 +7,22 @@ export type FetchWithAuthOption = {
   headers?: HeadersInit;
 };
 
+export type AuthContextValue = {
+  user: User | null;
+  setUser: React.Dispatch<SetStateAction<User | null>>;
+  userError: Error | null;
+  userLoading: boolean;
+  token: string | null;
+  setToken: React.Dispatch<SetStateAction<string | null>>;
+};
+
+export type User = {
+  id: number;
+  username: string;
+  displayName: string;
+  role: "ADMIN" | "USER";
+};
+
 export type Link = {
   name: string;
   to: string;
@@ -24,22 +40,6 @@ export type Post = {
 };
 
 export type Posts = Post[];
-
-export type User = {
-  id: number;
-  username: string;
-  displayName: string;
-  role: "ADMIN" | "USER";
-};
-
-export type AuthContextValue = {
-  user: User | null;
-  setUser: React.Dispatch<SetStateAction<User | null>>;
-  userError: Error | null;
-  userLoading: boolean;
-  token: string | null;
-  setToken: React.Dispatch<SetStateAction<string | null>>;
-};
 
 export type SignupBody = {
   username: string;
