@@ -54,11 +54,11 @@ describe("useAuthState hook", () => {
     expect(result.current.userError?.message).toMatch(/Fetch Error/i);
   });
 
-  it("request should be aborted on unmont", () => {
+  it("abort request on unmount", () => {
     const abort = vi.fn();
     vi.stubGlobal(
       "AbortController",
-      class AbortMock {
+      class MockAbort {
         signal = {};
         abort = abort;
       },

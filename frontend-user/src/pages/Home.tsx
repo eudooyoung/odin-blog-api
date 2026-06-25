@@ -1,4 +1,4 @@
-import PostList from "@/components/PostList.tsx";
+import PostList from "@/components/Posts";
 
 const Home = () => {
   return (

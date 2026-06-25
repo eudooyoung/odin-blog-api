@@ -1,19 +1,13 @@
-import { useFetch } from "@/hooks/useFetch.ts";
-import { env } from "@/lib/env.ts";
-import type { Posts } from "@/types/types.ts";
+import { usePosts } from "@/hooks/usePosts";
 
 const PostList = () => {
-  const {
-    data: posts,
-    error: postError,
-    loading: postLoading,
-  } = useFetch<Posts>(`${env.apiBaseUrl}/posts`);
+  const { posts, postsError, postsLoading } = usePosts();
 
   return (
     <section>
       <h3>Posts</h3>
-      {postLoading && <span>loading...</span>}
-      {postError && <span>{postError.message}</span>}
+      {postsLoading && <span>loading...</span>}
+      {postsError && <span>{postsError.message}</span>}
       <div>
         {posts &&
           posts.map((post) => (
