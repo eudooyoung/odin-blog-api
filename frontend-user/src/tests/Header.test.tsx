@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 
-describe("Header Component", () => {
+describe("Header component", () => {
   it("show public links when non-authenticated", () => {
     render(
       <AuthContext value={{} as AuthContextValue}>

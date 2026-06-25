@@ -6,7 +6,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it } from "vitest";
 
-describe("Protected Route", () => {
+describe("Protected route", () => {
   it("show protected pages when auth user access", () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>

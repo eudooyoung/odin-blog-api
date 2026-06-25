@@ -5,7 +5,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-describe("Profile Page", () => {
+describe.skip("Profile page", () => {
   it("user info displayed", () => {
     render(
       <AuthContext

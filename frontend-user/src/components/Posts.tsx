@@ -1,6 +1,6 @@
 import { usePosts } from "@/hooks/usePosts";
 
-const PostList = () => {
+const Posts = () => {
   const { posts, postsError, postsLoading } = usePosts();
 
   return (
@@ -8,9 +8,9 @@ const PostList = () => {
       <h3>Posts</h3>
       {postsLoading && <span>loading...</span>}
       {postsError && <span>{postsError.message}</span>}
-      <div>
-        {posts &&
-          posts.map((post) => (
+      {posts && (
+        <div>
+          {posts.map((post) => (
             <section key={post.id}>
               <h4>
                 <a href="">{post.title}</a>
@@ -23,9 +23,10 @@ const PostList = () => {
               </footer>
             </section>
           ))}
-      </div>
+        </div>
+      )}
     </section>
   );
 };
 
-export default PostList;
+export default Posts;

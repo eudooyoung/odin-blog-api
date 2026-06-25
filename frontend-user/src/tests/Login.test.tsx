@@ -15,7 +15,7 @@ vi.mock("@/pages/Home.tsx", () => ({
   default: () => <h2>Home</h2>,
 }));
 
-describe("Login Page", () => {
+describe("Login page", () => {
   it("login pending", async () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockImplementation(
