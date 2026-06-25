@@ -14,7 +14,7 @@ describe("usePosts hook", () => {
     const { result } = renderHook(() => usePosts());
 
     await waitFor(() => {
-      expect(result.current.postsLoading).toBeFalsy();
+      expect(result.current.postsLoading).toBe(false);
     });
 
     expect(result.current.posts).toEqual(mockData);

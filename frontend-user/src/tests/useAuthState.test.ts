@@ -19,7 +19,7 @@ describe("useAuthState hook", () => {
     const { result } = renderHook(() => useAuthState());
 
     await waitFor(() => {
-      expect(result.current.userLoading).toBeFalsy();
+      expect(result.current.userLoading).toBe(false);
     });
 
     expect(result.current.user).toEqual(mockUser);
@@ -35,7 +35,7 @@ describe("useAuthState hook", () => {
     const { result } = renderHook(() => useAuthState());
 
     await waitFor(() => {
-      expect(result.current.userLoading).toBeFalsy();
+      expect(result.current.userLoading).toBe(false);
     });
 
     expect(result.current.userError?.message).toMatch(/401/);
@@ -48,7 +48,7 @@ describe("useAuthState hook", () => {
     const { result } = renderHook(() => useAuthState());
 
     await waitFor(() => {
-      expect(result.current.userLoading).toBeFalsy();
+      expect(result.current.userLoading).toBe(false);
     });
 
     expect(result.current.userError?.message).toMatch(/Fetch Error/i);

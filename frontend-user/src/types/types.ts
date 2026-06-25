@@ -55,11 +55,7 @@ export type SignupError = {
   displayName?: string;
 };
 
-export type SignupValidationError = {
+export type ValidationError = {
   path: string;
   msg: string;
-};
-
-export type SignupValidationResponse = {
-  errors: SignupValidationError[];
 };
