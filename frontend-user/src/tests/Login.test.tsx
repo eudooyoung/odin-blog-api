@@ -1,21 +1,59 @@
+import { AuthContext } from "@/context/AuthContext.ts";
 import Home from "@/pages/Home.tsx";
 import Login from "@/pages/Login.tsx";
+import type { AuthContextValue } from "@/types/types.ts";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/hooks/useAuthContext.ts", () => ({
-  useAuthContext: () => ({
-    setUser: vi.fn(),
-    setToken: vi.fn(),
-  }),
-}));
-vi.mock("@/pages/Home.tsx", () => ({
-  default: () => <h2>Home</h2>,
+const { mockUseLogin } = vi.hoisted(() => ({ mockUseLogin: vi.fn() }));
+
+vi.mock("@/hooks/mockUseLogin.ts", () => ({
+  useLogin: mockUseLogin,
 }));
 
 describe("Login page", () => {
+  it.only("login success", async () => {
+    const user = userEvent.setup();
+    const mockResponse = {
+      user: { username: "mock@mock.com" },
+      token: "token",
+    };
+    mockUseLogin.mockImplementation(() => ({
+      login: vi.fn().mockResolvedValue(mockResponse),
+      loginLoading: false,
+      loginError: null,
+    }));
+    const mockAuthContext = {
+      setUser: vi.fn() as AuthContextValue["setUser"],
+      setToken: vi.fn() as AuthContextValue["setToken"],
+    } as AuthContextValue;
+    const mockLoginForm = {
+      username: "mock@mock.com",
+      password: "mock-password",
+    };
+    render(
+      <AuthContext value={mockAuthContext}>
+        <MemoryRouter>
+          <Login />
+        </MemoryRouter>
+      </AuthContext>,
+    );
+
+    const loginForm = screen.getByRole("form", {
+      name: /login/i,
+    }) as HTMLFormElement;
+    for (const [name, value] of Object.entries(mockLoginForm)) {
+      const input = loginForm.elements.namedItem(name) as Element;
+      await user.type(input, value);
+    }
+    await user.click(screen.getByRole("button", { name: /login/i }));
+    // expect(mockAuthContext.setUser).toHaveBeenCalledWith(mockResponse.user);
+    // expect(mockAuthContext.setToken).toHaveBeenCalledWith(mockResponse.token);
+    // expect(localStorage.getItem("token")).toEqual(mockResponse.token);
+  });
+
   it("login pending", async () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockImplementation(

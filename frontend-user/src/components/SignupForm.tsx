@@ -18,7 +18,7 @@ const SignupForm = () => {
     useSignup();
   const navigate = useNavigate();
 
-  const formChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const inputChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -28,7 +28,7 @@ const SignupForm = () => {
 
   const signupHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    signup(form);
+    await signup(form);
     if (
       !signupLoading &&
       Object.keys(signupValidationError).length === 0 &&
@@ -39,14 +39,15 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={signupHandler}>
+    <form onSubmit={signupHandler} aria-label="signup">
       <label htmlFor="username">username</label>
       <input
         type="text"
         id="username"
         name="username"
         value={form.username}
-        onChange={formChangeHandler}
+        onChange={inputChangeHandler}
+        required
       />
       {signupValidationError.username && signupValidationError.username}
       <label htmlFor="password">password</label>
@@ -55,7 +56,8 @@ const SignupForm = () => {
         id="password"
         name="password"
         value={form.password}
-        onChange={formChangeHandler}
+        onChange={inputChangeHandler}
+        required
       />
       {signupValidationError.password && signupValidationError.password}
       <label htmlFor="confirmPassword">confirm password</label>
@@ -64,7 +66,8 @@ const SignupForm = () => {
         id="confirmPassword"
         name="confirmPassword"
         value={form.confirmPassword}
-        onChange={formChangeHandler}
+        onChange={inputChangeHandler}
+        required
       />
       {signupValidationError.confirmPassword &&
         signupValidationError.confirmPassword}
@@ -74,7 +77,8 @@ const SignupForm = () => {
         id="displayName"
         name="displayName"
         value={form.displayName}
-        onChange={formChangeHandler}
+        onChange={inputChangeHandler}
+        required
       />
       {signupValidationError.displayName && signupValidationError.displayName}
       <button type="submit" disabled={signupLoading}>

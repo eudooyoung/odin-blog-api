@@ -5,22 +5,22 @@ import { act } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 describe("useSignup hook", () => {
-  it("signup success", async () => {
+  it("signup request success", async () => {
     const mockForm = {
       username: "mock@mock.com",
       password: "mock-password",
     };
-    const mockFetch = vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+    const spyFetch = vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
         ok: true,
         status: 201,
-        json: () => Promise.resolve(mockForm),
+        json: () => Promise.resolve(),
       } as Response);
     });
     const { result } = renderHook(() => useSignup());
 
     await act(() => result.current.signup(mockForm as SignupBody));
-    expect(mockFetch).toHaveBeenCalledWith(
+    expect(spyFetch).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
         body: JSON.stringify(mockForm),
@@ -33,7 +33,7 @@ describe("useSignup hook", () => {
     expect(result.current.signupError).toBeNull();
   });
 
-  it("signup fails with validation error", async () => {
+  it("signup request fails with validation error", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
         ok: false,
@@ -54,7 +54,7 @@ describe("useSignup hook", () => {
     });
   });
 
-  it("signup fails with server error", async () => {
+  it("signup request fails with server error", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.resolve({
         ok: false,
@@ -70,7 +70,7 @@ describe("useSignup hook", () => {
     expect(result.current.signupError?.message).toMatch(/server error/i);
   });
 
-  it("signup fails with fetch error", async () => {
+  it("signup request fails with fetch error", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(() => {
       return Promise.reject(new Error("Fetch Error"));
     });

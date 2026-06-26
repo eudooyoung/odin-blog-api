@@ -7,12 +7,16 @@ import type {
 import { useState } from "react";
 
 export const useSignup = () => {
-  const [signupLoading, setSignupLoading] = useState(true);
+  const [signupLoading, setSignupLoading] = useState(false);
   const [signupValidationError, setSignupValidationError] =
     useState<SignupValidationError>({});
   const [signupError, setSignupError] = useState<Error | null>(null);
 
   const signup = async (form: SignupBody) => {
+    setSignupLoading(true);
+    setSignupValidationError({});
+    setSignupError(null);
+
     try {
       const response = await fetch(`${env.apiBaseUrl}/users`, {
         method: "post",

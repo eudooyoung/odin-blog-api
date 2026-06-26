@@ -53,6 +53,17 @@ export type ValidationErrorResponse = {
   msg: string;
 };
 
+export type LoginBody = {
+  username: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  user: User;
+  token: string;
+  expires: string;
+};
+
 export type Link = {
   name: string;
   to: string;

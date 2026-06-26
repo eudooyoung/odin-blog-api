@@ -1,9 +1,9 @@
 import Signup from "@/pages/Signup.tsx";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import * as router from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 const { mockUseSignup } = vi.hoisted(() => ({
   mockUseSignup: vi.fn(),
@@ -26,12 +26,25 @@ describe("Signup page", () => {
       signupValidationError: {},
       signupError: null,
     }));
+    const mockSignupForm = {
+      username: "mock@mock.com",
+      password: "mock-password",
+      confirmPassword: "mock-password",
+      displayName: "mock-name",
+    };
     render(
       <MemoryRouter initialEntries={["/signup"]}>
         <Signup />
       </MemoryRouter>,
     );
 
+    const signupForm = screen.getByRole("form", {
+      name: /signup/i,
+    }) as HTMLFormElement;
+    for (const [name, value] of Object.entries(mockSignupForm)) {
+      const input = signupForm.elements.namedItem(name) as Element;
+      await user.type(input, value);
+    }
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
