@@ -54,5 +54,31 @@ describe("useSignup hook", () => {
     });
   });
 
-  it("signup fails with server error", async () => {});
+  it("signup fails with server error", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.resolve({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ error: { message: "Server Error" } }),
+      } as Response);
+    });
+    const { result } = renderHook(() => useSignup());
+    await act(() => result.current.signup({} as SignupBody));
+    await waitFor(() => {
+      expect(result.current.signupLoading).toBe(false);
+    });
+    expect(result.current.signupError?.message).toMatch(/server error/i);
+  });
+
+  it("signup fails with fetch error", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.reject(new Error("Fetch Error"));
+    });
+    const { result } = renderHook(() => useSignup());
+    await act(() => result.current.signup({} as SignupBody));
+    await waitFor(() => {
+      expect(result.current.signupLoading).toBe(false);
+    });
+    expect(result.current.signupError?.message).toMatch(/fetch error/i);
+  });
 });
