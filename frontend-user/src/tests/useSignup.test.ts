@@ -29,7 +29,7 @@ describe("useSignup hook", () => {
     await waitFor(() => {
       expect(result.current.signupLoading).toBe(false);
     });
-    expect(result.current.validationError).toEqual({});
+    expect(result.current.signupValidationError).toEqual({});
     expect(result.current.signupError).toBeNull();
   });
 
@@ -49,7 +49,7 @@ describe("useSignup hook", () => {
     await waitFor(() => {
       expect(result.current.signupLoading).toBe(false);
     });
-    expect(result.current.validationError).toEqual({
+    expect(result.current.signupValidationError).toEqual({
       username: "username already in use",
     });
   });

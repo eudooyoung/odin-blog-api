@@ -23,13 +23,6 @@ export type User = {
   role: "ADMIN" | "USER";
 };
 
-export type Link = {
-  name: string;
-  to: string;
-};
-
-export type Links = Link[];
-
 export type Post = {
   id: number;
   title: string;
@@ -48,14 +41,21 @@ export type SignupBody = {
   displayName: string;
 };
 
-export type SignupError = {
+export type SignupValidationError = {
   username?: string;
   password?: string;
   confirmPassword?: string;
   displayName?: string;
 };
 
-export type ValidationError = {
+export type ValidationErrorResponse = {
   path: string;
   msg: string;
 };
+
+export type Link = {
+  name: string;
+  to: string;
+};
+
+export type Links = Link[];

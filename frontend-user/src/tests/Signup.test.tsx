@@ -1,154 +1,101 @@
-import Login from "@/pages/Login.tsx";
 import Signup from "@/pages/Signup.tsx";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { MemoryRouter } from "react-router";
+import * as router from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/hooks/useAuthContext.ts", () => ({
-  useAuthContext: () => ({
-    setUser: vi.fn(),
-    setToken: vi.fn(),
-  }),
+const { mockUseSignup } = vi.hoisted(() => ({
+  mockUseSignup: vi.fn(),
 }));
-vi.mock("@/pages/Home.tsx", () => ({
-  default: () => <h2>Home</h2>,
+
+vi.mock("@/hooks/useSignup.ts", () => ({
+  useSignup: mockUseSignup,
 }));
 
 describe("Signup page", () => {
   it("signup success", async () => {
     const user = userEvent.setup();
-    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
-      return Promise.resolve({
-        status: 201,
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            user: { usename: "test@test.com", displayName: "test-display" },
-          }),
-      } as Response);
+    const navigate = vi.fn();
+    vi.spyOn(router, "useNavigate").mockImplementation(() => {
+      return navigate;
     });
+    mockUseSignup.mockImplementation(() => ({
+      signup: () => {},
+      signupLoading: false,
+      signupValidationError: {},
+      signupError: null,
+    }));
     render(
       <MemoryRouter initialEntries={["/signup"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
+        <Signup />
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/i });
-    await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/^password/i);
-    await user.type(pwInput, "test-password");
-    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
-    await user.type(pwConfirmInput, "test-password");
-    const displayNameInput = screen.getByRole("textbox", {
-      name: /display name/i,
-    });
-    await user.type(displayNameInput, "test-display");
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
-    const homeTitle = await screen.findByRole("heading", { name: /login/i });
-    expect(homeTitle).toBeInTheDocument();
-    const signupSuccessMessage = screen.getByRole("heading", {
-      name: /success/i,
+    expect(navigate).toHaveBeenCalledWith("/login", {
+      state: { message: expect.stringMatching(/success/i) },
     });
-    expect(signupSuccessMessage).toBeInTheDocument();
   });
 
-  it("server error", async () => {
+  it("signup button disabled during pending response", () => {
+    mockUseSignup.mockImplementation(() => ({
+      signup: () => {},
+      signupLoading: true,
+      signupValidationError: {},
+      signupError: null,
+    }));
+    render(
+      <MemoryRouter initialEntries={["/signup"]}>
+        <Signup />
+      </MemoryRouter>,
+    );
+
+    const signupButton = screen.getByRole("button", { name: /signup/i });
+    expect(signupButton).toBeDisabled();
+  });
+
+  it("signup fails with validation error", async () => {
     const user = userEvent.setup();
-    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
-      return Promise.resolve({
-        status: 500,
-        json: () => {},
-      } as Response);
-    });
+    mockUseSignup.mockImplementation(() => ({
+      signup: () => {},
+      signupLoading: false,
+      signupValidationError: { username: "username already in use" },
+      signupError: null,
+    }));
     render(
       <MemoryRouter>
         <Signup />
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/i });
-    await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/^password/i);
-    await user.type(pwInput, "test-password");
-    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
-    await user.type(pwConfirmInput, "test-password");
-    const displayNameInput = screen.getByRole("textbox", {
-      name: /display name/i,
-    });
-    await user.type(displayNameInput, "test-display");
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
-    const errorMessage = await screen.findByText(/server error/i);
+    const errorMessage = await screen.findByText(/username already in use/i);
     expect(errorMessage).toBeInTheDocument();
   });
 
-  it("validation error", async () => {
+  it("signup fails with other error", async () => {
     const user = userEvent.setup();
-    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
-      return Promise.resolve({
-        status: 400,
-        ok: false,
-        json: () => {
-          return Promise.resolve({
-            errors: [{ path: "username", msg: "username already in use" }],
-          });
-        },
-      } as Response);
-    });
+    mockUseSignup.mockImplementation(() => ({
+      signup: () => {},
+      signupLoading: false,
+      signupValidationError: {},
+      signupError: new Error("Other Error"),
+    }));
     render(
       <MemoryRouter>
         <Signup />
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByRole("textbox", { name: /username/i });
-    await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/^password/i);
-    await user.type(pwInput, "test-password");
-    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
-    await user.type(pwConfirmInput, "test-password");
-    const displayNameInput = screen.getByRole("textbox", {
-      name: /display name/i,
-    });
-    await user.type(displayNameInput, "test-display");
     const signupButton = screen.getByRole("button", { name: /signup/i });
     await user.click(signupButton);
 
-    const errorMessage = await screen.findByText(/already in use/i);
-    expect(errorMessage).toBeInTheDocument();
-  });
-
-  it("fetch error", async () => {
-    const user = userEvent.setup();
-    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
-      return Promise.reject(new Error("fetch error"));
-    });
-    render(
-      <MemoryRouter>
-        <Signup />
-      </MemoryRouter>,
-    );
-    const usernameInput = screen.getByRole("textbox", { name: /username/i });
-    await user.type(usernameInput, "test@test.com");
-    const pwInput = screen.getByLabelText(/^password/i);
-    await user.type(pwInput, "test-password");
-    const pwConfirmInput = screen.getByLabelText(/^confirm/i);
-    await user.type(pwConfirmInput, "test-password");
-    const displayNameInput = screen.getByRole("textbox", {
-      name: /display name/i,
-    });
-    await user.type(displayNameInput, "test-display");
-    const signupButton = screen.getByRole("button", { name: /signup/i });
-    await user.click(signupButton);
-
-    const errorMessage = await screen.findByText(/fetch error/);
+    const errorMessage = await screen.findByText(/other error/i);
     expect(errorMessage).toBeInTheDocument();
   });
 });

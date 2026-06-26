@@ -1,9 +1,5 @@
-import { env } from "@/lib/env.ts";
-import type {
-  SignupBody,
-  SignupError,
-  SignupValidationResponse,
-} from "@/types/types.ts";
+import { useSignup } from "@/hooks/useSignup.ts";
+import type { SignupBody } from "@/types/types.ts";
 import {
   useState,
   type ChangeEventHandler,
@@ -18,9 +14,8 @@ const SignupForm = () => {
     confirmPassword: "",
     displayName: "",
   });
-  const [signupError, setSignupError] = useState<SignupError>({});
-  const [serverError, setServerError] = useState<Error | null>(null);
-  const [signupLoading, setSignupLoading] = useState(false);
+  const { signup, signupLoading, signupValidationError, signupError } =
+    useSignup();
   const navigate = useNavigate();
 
   const formChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -33,39 +28,13 @@ const SignupForm = () => {
 
   const signupHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
-    try {
-      setSignupError({});
-      setSignupLoading(true);
-
-      const response = await fetch(`${env.apiBaseUrl}/users`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-      const data: SignupValidationResponse = await response.json();
-
-      if (!response.ok) {
-        if (response.status < 500) {
-          setSignupError(
-            Object.fromEntries(data.errors.map((e) => [e.path, e.msg])),
-          );
-        } else {
-          setServerError(new Error(`Server error: ${response.status}`));
-        }
-
-        return;
-      }
-
-      navigate("/login", { state: { message: "signup success!" } });
-    } catch (error) {
-      if (error instanceof Error) {
-        setServerError(error);
-      }
-    } finally {
-      setSignupLoading(false);
+    signup(form);
+    if (
+      !signupLoading &&
+      Object.keys(signupValidationError).length === 0 &&
+      signupError === null
+    ) {
+      navigate("/login", { state: { message: "signup success" } });
     }
   };
 
@@ -79,7 +48,7 @@ const SignupForm = () => {
         value={form.username}
         onChange={formChangeHandler}
       />
-      {signupError.username && signupError.username}
+      {signupValidationError.username && signupValidationError.username}
       <label htmlFor="password">password</label>
       <input
         type="password"
@@ -88,7 +57,7 @@ const SignupForm = () => {
         value={form.password}
         onChange={formChangeHandler}
       />
-      {signupError.password && signupError.password}
+      {signupValidationError.password && signupValidationError.password}
       <label htmlFor="confirmPassword">confirm password</label>
       <input
         type="password"
@@ -97,7 +66,8 @@ const SignupForm = () => {
         value={form.confirmPassword}
         onChange={formChangeHandler}
       />
-      {signupError.confirmPassword && signupError.confirmPassword}
+      {signupValidationError.confirmPassword &&
+        signupValidationError.confirmPassword}
       <label htmlFor="displayName">display name</label>
       <input
         type="text"
@@ -106,11 +76,11 @@ const SignupForm = () => {
         value={form.displayName}
         onChange={formChangeHandler}
       />
-      {signupError.displayName && signupError.displayName};
+      {signupValidationError.displayName && signupValidationError.displayName}
       <button type="submit" disabled={signupLoading}>
         Signup
       </button>
-      {serverError && serverError.message}
+      {signupError && signupError.message}
     </form>
   );
 };

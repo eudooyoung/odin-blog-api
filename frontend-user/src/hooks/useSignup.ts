@@ -1,14 +1,15 @@
 import { env } from "@/lib/env.ts";
 import type {
   SignupBody,
-  SignupError,
-  ValidationError,
+  SignupValidationError,
+  ValidationErrorResponse,
 } from "@/types/types.ts";
 import { useState } from "react";
 
 export const useSignup = () => {
   const [signupLoading, setSignupLoading] = useState(true);
-  const [validationError, setValidationError] = useState<SignupError>({});
+  const [signupValidationError, setSignupValidationError] =
+    useState<SignupValidationError>({});
   const [signupError, setSignupError] = useState<Error | null>(null);
 
   const signup = async (form: SignupBody) => {
@@ -23,10 +24,10 @@ export const useSignup = () => {
 
       if (!response.ok) {
         if (response.status < 500) {
-          const { errors }: { errors: ValidationError[] } =
+          const { errors }: { errors: ValidationErrorResponse[] } =
             await response.json();
           const errorSource = errors.map((error) => [error.path, error.msg]);
-          setValidationError(Object.fromEntries(errorSource));
+          setSignupValidationError(Object.fromEntries(errorSource));
         } else {
           const { error } = await response.json();
           setSignupError(error);
@@ -41,5 +42,5 @@ export const useSignup = () => {
       setSignupLoading(false);
     }
   };
-  return { signup, signupLoading, validationError, signupError };
+  return { signup, signupLoading, signupValidationError, signupError };
 };
