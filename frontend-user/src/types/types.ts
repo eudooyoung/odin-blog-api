@@ -1,6 +1,28 @@
 import type { SetStateAction } from "react";
 import type React from "react";
 
+export type FetchWithAuthOption = {
+  method: string;
+  signal?: AbortSignal;
+  headers?: HeadersInit;
+};
+
+export type AuthContextValue = {
+  user: User | null;
+  setUser: React.Dispatch<SetStateAction<User | null>>;
+  userError: Error | null;
+  userLoading: boolean;
+  token: string | null;
+  setToken: React.Dispatch<SetStateAction<string | null>>;
+};
+
+export type User = {
+  id: number;
+  username: string;
+  displayName: string;
+  role: "ADMIN" | "USER";
+};
+
 export type Link = {
   name: string;
   to: string;
@@ -19,22 +41,6 @@ export type Post = {
 
 export type Posts = Post[];
 
-export type User = {
-  id: number;
-  username: string;
-  displayName: string;
-  role: "ADMIN" | "USER";
-};
-
-export type AuthContextValue = {
-  user: User | null;
-  setUser: React.Dispatch<SetStateAction<User | null>>;
-  userError: Error | null;
-  userLoading: boolean;
-  token: string | null;
-  setToken: React.Dispatch<SetStateAction<string | null>>;
-};
-
 export type SignupBody = {
   username: string;
   password: string;
@@ -49,11 +55,7 @@ export type SignupError = {
   displayName?: string;
 };
 
-export type SignupValidationError = {
+export type ValidationError = {
   path: string;
   msg: string;
-};
-
-export type SignupValidationResponse = {
-  errors: SignupValidationError[];
 };

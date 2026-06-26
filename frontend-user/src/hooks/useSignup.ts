@@ -1,0 +1,40 @@
+import { env } from "@/lib/env.ts";
+import type {
+  SignupBody,
+  SignupError,
+  ValidationError,
+} from "@/types/types.ts";
+import { useState } from "react";
+
+export const useSignup = () => {
+  const [signupLoading, setSignupLoading] = useState(true);
+  const [validationError, setValidationError] = useState<SignupError>({});
+  const [signupError, setSignupError] = useState<Error | null>(null);
+
+  const signup = async (form: SignupBody) => {
+    try {
+      const response = await fetch(`${env.apiBaseUrl}/users`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        if (response.status < 500) {
+          const { errors }: { errors: ValidationError[] } =
+            await response.json();
+          const errorSource = errors.map((error) => [error.path, error.msg]);
+          setValidationError(Object.fromEntries(errorSource));
+        }
+        throw new Error();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSignupLoading(false);
+    }
+  };
+  return { signup, signupLoading, validationError, signupError };
+};

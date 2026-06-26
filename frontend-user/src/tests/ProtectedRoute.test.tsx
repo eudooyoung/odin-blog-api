@@ -6,11 +6,11 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it } from "vitest";
 
-describe("Protected Route", () => {
+describe("Protected route", () => {
   it("show protected pages when auth user access", () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
-        <AuthContext value={{ token: "token" } as AuthContextValue}>
+        <AuthContext value={{ token: "token", user: {} } as AuthContextValue}>
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route path="/protected" element={<h2>Protected Page</h2>} />
@@ -26,10 +26,10 @@ describe("Protected Route", () => {
     expect(protectedHeading).toBeInTheDocument();
   });
 
-  it("navigate to login page when non-auth user access to protected pages", () => {
+  it("navigate to login page when non-auth user access to protected pages", async () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
-        <AuthContext value={{ token: null } as AuthContextValue}>
+        <AuthContext value={{ token: null, user: null } as AuthContextValue}>
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route path="/protected" element={<h2>Protected Page</h2>} />
@@ -40,7 +40,7 @@ describe("Protected Route", () => {
       </MemoryRouter>,
     );
 
-    const loginHeading = screen.getByRole("heading", { name: /login/i });
+    const loginHeading = await screen.findByRole("heading", { name: /login/i });
     expect(loginHeading).toBeInTheDocument();
   });
 });

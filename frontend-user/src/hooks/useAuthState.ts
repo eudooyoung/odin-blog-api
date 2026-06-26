@@ -1,4 +1,5 @@
 import { env } from "@/lib/env.ts";
+import { fetchWithAuth } from "@/lib/fetchWithAuth.ts";
 import type { User } from "@/types/types.ts";
 import { useEffect, useState } from "react";
 
@@ -13,22 +14,13 @@ export const useAuthState = () => {
 
     void (async () => {
       try {
-        const response = await fetch(`${env.apiBaseUrl}/auth/status`, {
+        const data = await fetchWithAuth(`${env.apiBaseUrl}/auth/status`, {
           method: "get",
           signal: abrtController.signal,
           headers: token ? { Authorization: token } : {},
         });
 
-        if (response.status === 401) {
-          setUser(null);
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error(`Server Error: ${response.status}`);
-        }
-
-        const { user } = await response.json();
+        const { user } = data;
         setUser(user);
       } catch (error) {
         if (error instanceof Error) {
