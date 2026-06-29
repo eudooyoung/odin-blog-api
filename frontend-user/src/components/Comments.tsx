@@ -3,10 +3,10 @@ import { useComment } from "@/hooks/useComment.ts";
 import { useState, type MouseEventHandler } from "react";
 import { CommentEdit } from "./CommentEdit.tsx";
 
-export const Comments = ({ comments }) => {
+export const Comments = ({ postId }: { postId: number }) => {
   const { user } = useAuthContext();
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const { deleteComment } = useComment();
+  const { comments, deleteComment } = useComment(postId);
 
   const deleteCommentHandler = async () => {
     await deleteComment();

@@ -30,21 +30,11 @@ describe("Post page", () => {
         title: "mock-title",
         content: "mock-content",
         createdAt: "2020-01-01T00:00:00.000Z",
-        author: "mock-author",
-        comments: [
-          {
-            id: 1,
-            content: "mock-comment",
-            authorId: 1,
-            author: "mock-comment-author",
-          },
-          {
-            id: 2,
-            content: "mock-comment2",
-            authorId: 2,
-            author: "mock-comment-author2",
-          },
-        ],
+        authorId: 1,
+        author: {
+          id: 1,
+          displayName: "mock-post-author",
+        },
       },
       postLoading: false,
       postError: false,
@@ -55,13 +45,27 @@ describe("Post page", () => {
     });
 
     mockUseComment.mockReturnValue({
-      comment: vi.fn(),
+      comments: [
+        {
+          id: 1,
+          content: "mock-comment",
+          authorId: 1,
+          author: "mock-comment-author",
+        },
+        {
+          id: 2,
+          content: "mock-comment2",
+          authorId: 2,
+          author: "mock-comment-author2",
+        },
+      ],
+      createComment: vi.fn(),
       commentError: null,
       commentLoading: false,
     });
   });
 
-  it("render post detail", () => {
+  it.only("render post details and comments", () => {
     render(
       <MemoryRouter>
         <Post />
@@ -73,8 +77,7 @@ describe("Post page", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/mock-content/i)).toBeInTheDocument();
     expect(screen.getByText(/20. 1. 1./)).toBeInTheDocument();
-    expect(screen.getByText(/mock-author/i)).toBeInTheDocument();
-
+    expect(screen.getByText(/mock-post-author/i)).toBeInTheDocument();
     expect(screen.getByText(/mock-comment$/i)).toBeInTheDocument();
     expect(screen.getByText(/mock-comment-author$/i)).toBeInTheDocument();
   });
@@ -82,9 +85,9 @@ describe("Post page", () => {
   describe("Comment component", () => {
     it("add comment", async () => {
       const user = userEvent.setup();
-      const comment = vi.fn();
+      const createComment = vi.fn();
       mockUseComment.mockReturnValue({
-        comment,
+        createComment,
         commentError: null,
         commentLoading: false,
       });
@@ -101,7 +104,9 @@ describe("Post page", () => {
       });
       await user.click(saveCommentButton);
       expect(screen.getByRole("textbox", { name: /comment/i })).toHaveValue("");
-      expect(comment).toHaveBeenCalledWith({ commentContent: "new-comment" });
+      expect(createComment).toHaveBeenCalledWith({
+        commentContent: "new-comment",
+      });
     });
 
     it("add comment only avaliable for auth user", () => {

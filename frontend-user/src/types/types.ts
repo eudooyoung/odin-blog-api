@@ -30,6 +30,7 @@ export type Post = {
   published: boolean;
   createdAt: string;
   authorId: number;
+  author: Pick<User, "id" | "displayName">;
 };
 
 export type Posts = Post[];
