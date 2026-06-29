@@ -1,17 +1,22 @@
 import { env } from "@/lib/env.ts";
 import type {
   SignupBody,
-  SignupError,
-  ValidationError,
+  SignupValidationError,
+  ValidationErrorResponse,
 } from "@/types/types.ts";
 import { useState } from "react";
 
 export const useSignup = () => {
-  const [signupLoading, setSignupLoading] = useState(true);
-  const [validationError, setValidationError] = useState<SignupError>({});
+  const [signupLoading, setSignupLoading] = useState(false);
+  const [signupValidationError, setSignupValidationError] =
+    useState<SignupValidationError>({});
   const [signupError, setSignupError] = useState<Error | null>(null);
 
   const signup = async (form: SignupBody) => {
+    setSignupLoading(true);
+    setSignupValidationError({});
+    setSignupError(null);
+
     try {
       const response = await fetch(`${env.apiBaseUrl}/users`, {
         method: "post",
@@ -22,19 +27,24 @@ export const useSignup = () => {
       });
 
       if (!response.ok) {
-        if (response.status < 500) {
-          const { errors }: { errors: ValidationError[] } =
+        if (response.status === 400) {
+          const { errors }: { errors: ValidationErrorResponse[] } =
             await response.json();
           const errorSource = errors.map((error) => [error.path, error.msg]);
-          setValidationError(Object.fromEntries(errorSource));
+          setSignupValidationError(Object.fromEntries(errorSource));
+        } else {
+          const { error } = await response.json();
+          setSignupError(error);
         }
-        throw new Error();
+        return;
       }
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        setSignupError(error);
+      }
     } finally {
       setSignupLoading(false);
     }
   };
-  return { signup, signupLoading, validationError, signupError };
+  return { signup, signupLoading, signupValidationError, signupError };
 };
