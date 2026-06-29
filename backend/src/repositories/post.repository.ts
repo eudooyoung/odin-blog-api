@@ -31,6 +31,14 @@ export const findPostById = async (id: number) => {
     where: {
       id,
     },
+    include: {
+      author: {
+        select: {
+          id: true,
+          displayName: true,
+        },
+      },
+    },
   });
   return post;
 };
