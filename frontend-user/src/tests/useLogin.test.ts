@@ -65,18 +65,40 @@ describe("useLogin hook", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: false,
       status: 401,
-      json: () =>
-        Promise.resolve({
-          error: { message: "Invalid username or password" },
-        }),
     } as Response);
     const { result } = renderHook(() => useLogin());
     await act(() => result.current.login({} as LoginBody));
     await waitFor(() => {
       expect(result.current.loginLoading).toBe(false);
     });
-    expect(result.current.loginError).toEqual({
-      message: "Invalid username or password",
+    expect(result.current.loginError?.message).toMatch(
+      /invalid username or password/i,
+    );
+  });
+
+  it("login request fails with server error", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(() => {
+      return Promise.resolve({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ error: { message: "Server Error" } }),
+      } as Response);
     });
+    const { result } = renderHook(() => useLogin());
+    await act(() => result.current.login({} as LoginBody));
+    await waitFor(() => {
+      expect(result.current.loginLoading).toBe(false);
+    });
+    expect(result.current.loginError?.message).toMatch(/server error/i);
+  });
+
+  it("login request fails with fetch error", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Fetch Error"));
+    const { result } = renderHook(() => useLogin());
+    await act(() => result.current.login({} as LoginBody));
+    await waitFor(() => {
+      expect(result.current.loginLoading).toBe(false);
+    });
+    expect(result.current.loginError?.message).toMatch(/fetch error/i);
   });
 });

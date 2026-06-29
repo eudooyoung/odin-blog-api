@@ -27,7 +27,7 @@ export const useSignup = () => {
       });
 
       if (!response.ok) {
-        if (response.status < 500) {
+        if (response.status === 400) {
           const { errors }: { errors: ValidationErrorResponse[] } =
             await response.json();
           const errorSource = errors.map((error) => [error.path, error.msg]);

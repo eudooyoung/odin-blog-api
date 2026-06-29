@@ -79,7 +79,7 @@ describe("useAuthState hook", () => {
     });
     const { result } = renderHook(() => useAuthState());
 
-    act(() => {
+    await act(async () => {
       result.current.setToken("new-token");
     });
 

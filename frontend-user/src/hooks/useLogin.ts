@@ -20,9 +20,13 @@ export const useLogin = () => {
       });
 
       if (!response.ok) {
-        const { error } = await response.json();
-        console.log(error);
-        throw error;
+        if (response.status === 401) {
+          setLoginError(new Error("Invalid username or password"));
+        } else {
+          const { error } = await response.json();
+          setLoginError(error);
+        }
+        return;
       }
 
       const { user, token } = await response.json();
