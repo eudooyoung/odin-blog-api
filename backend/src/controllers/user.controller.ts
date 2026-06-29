@@ -5,12 +5,7 @@ import {
   findUsers,
   updateUserById,
 } from "@/repositories/user.repository.js";
-import type {
-  CreateUserInput,
-  UpdateUserBody,
-  UpdateUserInput,
-  UserBody,
-} from "@/types/user.types.js";
+import type { CreateUserInput, UpdateUserInput } from "@/types/user.types.js";
 import {
   validateCreateUser,
   validateUpdateUser,
