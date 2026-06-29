@@ -1,6 +1,4 @@
-import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import useLogin from "@/hooks/useLogin.ts";
-import { env } from "@/lib/env.ts";
+import { useLogin } from "@/hooks/useLogin.ts";
 import type { LoginBody } from "@/types/types.ts";
 import {
   useState,
@@ -10,7 +8,6 @@ import {
 import { useNavigate } from "react-router";
 
 const LoginForm = () => {
-  const { setUser, setToken } = useAuthContext();
   const [form, setForm] = useState<LoginBody>({ username: "", password: "" });
   const { login, loginLoading, loginError } = useLogin();
   const navigate = useNavigate();
@@ -25,15 +22,10 @@ const LoginForm = () => {
 
   const loginHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log(1);
-
-    const { user, token } = await login(form);
-    if (loginError) {
-      return;
+    await login(form);
+    if (!loginError) {
+      navigate("/");
     }
-    setUser(user);
-    setToken(token);
-    localStorage.setItem("token", token);
   };
 
   return (
@@ -43,6 +35,7 @@ const LoginForm = () => {
         type="email"
         name="username"
         id="username"
+        value={form.username}
         onChange={inputChangeHandler}
         autoFocus
         required
@@ -52,6 +45,7 @@ const LoginForm = () => {
         type="password"
         name="password"
         id="password"
+        value={form.password}
         onChange={inputChangeHandler}
         required
       />

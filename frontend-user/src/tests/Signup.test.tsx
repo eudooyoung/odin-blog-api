@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import * as router from "react-router";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 const { mockUseSignup } = vi.hoisted(() => ({
   mockUseSignup: vi.fn(),
@@ -33,7 +33,7 @@ describe("Signup page", () => {
       displayName: "mock-name",
     };
     render(
-      <MemoryRouter initialEntries={["/signup"]}>
+      <MemoryRouter>
         <Signup />
       </MemoryRouter>,
     );
@@ -53,7 +53,7 @@ describe("Signup page", () => {
     });
   });
 
-  it("signup button disabled during pending response", () => {
+  it("signup button disabled while pending response", () => {
     mockUseSignup.mockImplementation(() => ({
       signup: () => {},
       signupLoading: true,

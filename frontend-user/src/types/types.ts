@@ -61,7 +61,7 @@ export type LoginBody = {
 export type LoginResponse = {
   user: User;
   token: string;
-  expires: string;
+  expires?: string;
 };
 
 export type Link = {
