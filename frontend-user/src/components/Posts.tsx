@@ -1,4 +1,5 @@
 import { usePosts } from "@/hooks/usePosts";
+import { Link } from "react-router";
 
 const Posts = () => {
   const { posts, postsError, postsLoading } = usePosts();
@@ -13,7 +14,7 @@ const Posts = () => {
           {posts.map((post) => (
             <section key={post.id}>
               <h4>
-                <a href="">{post.title}</a>
+                <Link to={`/posts/${post.id}`}>{post.title}</Link>
               </h4>
               <p>{post.content}</p>
               <footer>
