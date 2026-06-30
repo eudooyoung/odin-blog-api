@@ -25,6 +25,7 @@ describe("usePosts hook", () => {
       return Promise.resolve({
         ok: false,
         status: 404,
+        json: () => Promise.resolve({ error: { message: "HTTP error" } }),
       } as Response);
     });
     const { result } = renderHook(() => usePosts());
@@ -32,7 +33,7 @@ describe("usePosts hook", () => {
     await waitFor(() => {
       expect(result.current.postsLoading).toBe(false);
     });
-    expect(result.current.postsError?.message).toMatch(/404/i);
+    expect(result.current.postsError?.message).toMatch(/http error/i);
   });
 
   it("fetch posts fails with fetch error", async () => {

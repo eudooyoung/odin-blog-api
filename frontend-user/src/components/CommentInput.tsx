@@ -4,7 +4,7 @@ import { useState, type SubmitEventHandler } from "react";
 
 export const CommentInput = () => {
   const { user } = useAuthContext();
-  const { comment, commentError, commentLoading } = useComment();
+  const { createComment, commentError, commentLoading } = useComment();
   const [commentContent, setCommentContent] = useState("");
 
   const commentHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
@@ -12,7 +12,7 @@ export const CommentInput = () => {
     if (!commentError) {
       setCommentContent("");
     }
-    await comment({ commentContent });
+    await createComment({ commentContent });
   };
 
   return (

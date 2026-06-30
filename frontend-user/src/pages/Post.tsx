@@ -1,24 +1,25 @@
 import { CommentInput } from "@/components/CommentInput.tsx";
 import { Comments } from "@/components/Comments.tsx";
+import { ErrorMessage } from "@/components/ErrorMessage.tsx";
+import { Loading } from "@/components/Loading.tsx";
+import { PostView } from "@/components/PostView.tsx";
 import { usePost } from "@/hooks/usePost.ts";
+import { useParams } from "react-router";
 
 export const Post = () => {
-  const { post } = usePost();
+  const postId = Number(useParams().postId);
+  const { post, postLoading, postError } = usePost(postId);
+
+  if (postLoading) return <Loading />;
+  if (postError) return <ErrorMessage error={postError} />;
+  if (!post) return <p>Post not found</p>;
+
   return (
     <>
       <h2>Post Detail</h2>
-      <article>
-        <h3>{post.title}</h3>
-        <p>{post.content}</p>
-        <p>
-          {new Intl.DateTimeFormat("ko-KR", {
-            dateStyle: "short",
-          }).format(new Date(post.createdAt))}
-        </p>
-        <footer>{post.author}</footer>
-      </article>
+      <PostView post={post} />
       <CommentInput />
-      <Comments comments={post.comments} />
+      <Comments postId={postId} />
     </>
   );
 };

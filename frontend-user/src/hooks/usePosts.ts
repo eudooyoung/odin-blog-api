@@ -8,21 +8,21 @@ export const usePosts = () => {
   const [postsLoading, setPostsLoading] = useState(true);
 
   useEffect(() => {
-    const abrtController = new AbortController();
+    const abortController = new AbortController();
 
     void (async () => {
       try {
         const response = await fetch(`${env.apiBaseUrl}/posts`, {
           method: "get",
-          signal: abrtController.signal,
+          signal: abortController.signal,
         });
 
         if (!response.ok) {
-          throw new Error(`Http Error: Status ${response.status}`);
+          const { error } = await response.json();
+          setPostsError(error);
         }
 
         const data = await response.json();
-
         setPosts(data);
       } catch (error) {
         if (error instanceof Error) {
@@ -32,14 +32,14 @@ export const usePosts = () => {
           setPostsError(error);
         }
       } finally {
-        if (!abrtController.signal.aborted) {
+        if (!abortController.signal.aborted) {
           setPostsLoading(false);
         }
       }
     })();
 
     return () => {
-      abrtController.abort();
+      abortController.abort();
     };
   }, []);
 

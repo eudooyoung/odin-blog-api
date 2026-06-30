@@ -10,13 +10,13 @@ export const useAuthState = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
-    const abrtController = new AbortController();
+    const abortController = new AbortController();
 
     void (async () => {
       try {
         const data = await fetchWithAuth(`${env.apiBaseUrl}/auth/status`, {
           method: "get",
-          signal: abrtController.signal,
+          signal: abortController.signal,
           headers: token ? { Authorization: token } : {},
         });
 
@@ -30,14 +30,14 @@ export const useAuthState = () => {
           setUserError(error);
         }
       } finally {
-        if (!abrtController.signal.aborted) {
+        if (!abortController.signal.aborted) {
           setUserLoading(false);
         }
       }
     })();
 
     return () => {
-      abrtController.abort();
+      abortController.abort();
     };
   }, [token]);
 

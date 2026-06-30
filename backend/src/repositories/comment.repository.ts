@@ -32,6 +32,7 @@ export const findCommentsByPostId = async (postId: number) => {
     include: {
       author: {
         select: {
+          id: true,
           displayName: true,
         },
       },

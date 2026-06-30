@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useComment = () => {
+export const useComment = (postId: number) => {
   const [commentError, setCommentError] = useState<Error | null>(null);
   const [commentLoading, setCommentLoading] = useState(false);
-  const comment = () => {};
+  const comments = null;
+  const createComment = () => {};
   const updateComment = () => {};
   const deleteComment = () => {};
+  useEffect(() => {
+    const abortController = new AbortController();
+    const getCommentsByPostId = async () => {
+      try {
+      } catch {
+      } finally {
+      }
+    };
+  }, [postId]);
   return {
-    comment,
+    comments,
+    createComment,
     updateComment,
     deleteComment,
     commentError,
