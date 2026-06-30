@@ -4,10 +4,16 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockUsePost, mockUseAuthContext, mockUseComment } = vi.hoisted(() => ({
+const {
+  mockUsePost,
+  mockUseAuthContext,
+  mockUseComments,
+  mockUseCommentAction,
+} = vi.hoisted(() => ({
   mockUsePost: vi.fn(),
   mockUseAuthContext: vi.fn(),
-  mockUseComment: vi.fn(),
+  mockUseComments: vi.fn(),
+  mockUseCommentAction: vi.fn(),
 }));
 
 vi.mock("@/hooks/usePost", () => ({
@@ -18,24 +24,45 @@ vi.mock("@/hooks/useAuthContext", () => ({
   useAuthContext: mockUseAuthContext,
 }));
 
-vi.mock("@/hooks/useComment", () => ({
-  useComment: mockUseComment,
+vi.mock("@/hooks/useComments", () => ({
+  useComments: mockUseComments,
 }));
+
+vi.mock("@/hooks/useCommentAction", () => ({
+  useCommentAction: mockUseCommentAction,
+}));
+
+const mockPost = {
+  id: 1,
+  title: "mock-title",
+  content: "mock-content",
+  createdAt: "2020-01-01T00:00:00.000Z",
+  authorId: 1,
+  author: {
+    id: 1,
+    displayName: "mock-post-author",
+  },
+};
+
+const mockComments = [
+  {
+    id: 1,
+    content: "mock-comment",
+    authorId: 1,
+    author: { id: 1, displayName: "mock-comment-author" },
+  },
+  {
+    id: 2,
+    content: "mock-comment2",
+    authorId: 2,
+    author: { id: 2, displayName: "mock-comment-author2" },
+  },
+];
 
 describe("Post page", () => {
   beforeEach(() => {
     mockUsePost.mockReturnValue({
-      post: {
-        id: 1,
-        title: "mock-title",
-        content: "mock-content",
-        createdAt: "2020-01-01T00:00:00.000Z",
-        authorId: 1,
-        author: {
-          id: 1,
-          displayName: "mock-post-author",
-        },
-      },
+      post: mockPost,
       postLoading: false,
       postError: false,
     });
@@ -44,24 +71,14 @@ describe("Post page", () => {
       user: { id: 1, username: "mock-user", displayName: "mock-name" },
     });
 
-    mockUseComment.mockReturnValue({
-      comments: [
-        {
-          id: 1,
-          content: "mock-comment",
-          authorId: 1,
-          author: "mock-comment-author",
-        },
-        {
-          id: 2,
-          content: "mock-comment2",
-          authorId: 2,
-          author: "mock-comment-author2",
-        },
-      ],
-      createComment: vi.fn(),
+    mockUseComments.mockReturnValue({
+      comments: mockComments,
       commentError: null,
       commentLoading: false,
+    });
+
+    mockUseCommentAction.mockReturnValue({
+      // createComment: vi.fn()
     });
   });
 
@@ -108,7 +125,7 @@ describe("Post page", () => {
     });
   });
 
-  describe("Comment component", () => {
+  describe("Comment components", () => {
     it("render comments", () => {
       render(<Post />);
       expect(screen.getByText(/mock-comment$/i)).toBeInTheDocument();
@@ -118,10 +135,8 @@ describe("Post page", () => {
     it("add comment", async () => {
       const user = userEvent.setup();
       const createComment = vi.fn();
-      mockUseComment.mockReturnValue({
+      mockUseCommentAction.mockReturnValue({
         createComment,
-        commentError: null,
-        commentLoading: false,
       });
       render(
         <MemoryRouter>
@@ -157,25 +172,8 @@ describe("Post page", () => {
     it("update comment", async () => {
       const user = userEvent.setup();
       const updateComment = vi.fn();
-      mockUseComment.mockReturnValue({
-        comments: [
-          {
-            id: 1,
-            content: "mock-comment",
-            authorId: 1,
-            author: "mock-comment-author",
-          },
-          {
-            id: 2,
-            content: "mock-comment2",
-            authorId: 2,
-            author: "mock-comment-author2",
-          },
-        ],
-        createComment: vi.fn(),
+      mockUseCommentAction.mockReturnValue({
         updateComment,
-        commentError: null,
-        commentLoading: false,
       });
       render(
         <MemoryRouter>
@@ -184,8 +182,8 @@ describe("Post page", () => {
       );
 
       const editButton = screen.getByRole("button", { name: /edit/i });
-      await user.click(editButton);
       const editingComment = editButton.closest("article") as HTMLElement;
+      await user.click(editButton);
       const updateCommentInput = within(editingComment).getByRole("textbox", {
         name: /edit comment/i,
       });
@@ -202,26 +200,13 @@ describe("Post page", () => {
 
     it("cancel edit comment", async () => {
       const user = userEvent.setup();
-      const updateComment = vi.fn();
-      mockUseComment.mockReturnValue({
-        comments: [
-          {
-            id: 1,
-            content: "mock-comment",
-            authorId: 1,
-            author: "mock-comment-author",
-          },
-          {
-            id: 2,
-            content: "mock-comment2",
-            authorId: 2,
-            author: "mock-comment-author2",
-          },
-        ],
-        createComment: vi.fn(),
-        updateComment,
+      mockUseComments.mockReturnValue({
+        comments: mockComments,
         commentError: null,
         commentLoading: false,
+      });
+      mockUseCommentAction.mockReturnValueOnce({
+        updateComment: vi.fn(),
       });
       render(
         <MemoryRouter>
@@ -230,8 +215,8 @@ describe("Post page", () => {
       );
 
       const editButton = screen.getByRole("button", { name: /edit/i });
-      await user.click(editButton);
       const editingComment = editButton.closest("article") as HTMLElement;
+      await user.click(editButton);
       const cancelButton = within(editingComment).getByRole("button", {
         name: /cancel/i,
       });
@@ -246,25 +231,8 @@ describe("Post page", () => {
     it("delete comment", async () => {
       const user = userEvent.setup();
       const deleteComment = vi.fn();
-      mockUseComment.mockReturnValue({
-        comments: [
-          {
-            id: 1,
-            content: "mock-comment",
-            authorId: 1,
-            author: "mock-comment-author",
-          },
-          {
-            id: 2,
-            content: "mock-comment2",
-            authorId: 2,
-            author: "mock-comment-author2",
-          },
-        ],
-        createComment: vi.fn(),
+      mockUseCommentAction.mockReturnValue({
         deleteComment,
-        commentError: null,
-        commentLoading: false,
       });
       render(
         <MemoryRouter>

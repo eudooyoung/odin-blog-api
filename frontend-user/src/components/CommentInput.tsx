@@ -1,10 +1,10 @@
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import { useComment } from "@/hooks/useComment.ts";
+import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import { useState, type SubmitEventHandler } from "react";
 
-export const CommentInput = () => {
+export const CommentInput = ({ postId }: { postId: number }) => {
   const { user } = useAuthContext();
-  const { createComment, commentError, commentLoading } = useComment();
+  const { createComment, commentError, commentLoading } = useCommentAction();
   const [commentContent, setCommentContent] = useState("");
 
   const commentHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {

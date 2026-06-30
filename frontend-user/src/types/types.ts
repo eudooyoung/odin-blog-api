@@ -29,7 +29,6 @@ export type Post = {
   content: string;
   published: boolean;
   createdAt: string;
-  authorId: number;
   author: Pick<User, "id" | "displayName">;
 };
 
@@ -71,3 +70,17 @@ export type Link = {
 };
 
 export type Links = Link[];
+
+export type Comment = {
+  id: number;
+  content: string;
+  postId: number;
+  authorId: number;
+  author: Pick<User, "id" | "displayName">;
+};
+
+export type Comments = Comment[];
+
+export type CommentValidationError = {
+  content?: string;
+};

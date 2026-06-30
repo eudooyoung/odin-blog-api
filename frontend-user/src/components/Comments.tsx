@@ -1,12 +1,14 @@
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import { useComment } from "@/hooks/useComment.ts";
+import { useComments } from "@/hooks/useComments.ts";
 import { useState } from "react";
 import { CommentEdit } from "./CommentEdit.tsx";
+import { useCommentAction } from "@/hooks/useCommentAction.ts";
 
 export const Comments = ({ postId }: { postId: number }) => {
   const { user } = useAuthContext();
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const { comments, deleteComment } = useComment(postId);
+  const { comments } = useComments(postId);
+  const { deleteComment } = useCommentAction();
 
   const deleteCommentHandler = async () => {
     await deleteComment();
@@ -30,17 +32,17 @@ export const Comments = ({ postId }: { postId: number }) => {
             ) : (
               <>
                 <p>{comment.content}</p>
-                <p>{comment.author}</p>
+                <p>{comment.author.displayName}</p>
               </>
             )}
 
-            {user?.id === comment.authorId &&
-              setEditingCommentId !== comment.id && (
+            {user?.id === comment.author.id &&
+              editingCommentId !== comment.id && (
                 <button onClick={() => setEditingCommentId(comment.id)}>
                   edit
                 </button>
               )}
-            {user?.id === comment.authorId && (
+            {user?.id === comment.author.id && (
               <button onClick={deleteCommentHandler}>delete</button>
             )}
           </article>

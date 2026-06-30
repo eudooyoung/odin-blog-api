@@ -18,7 +18,7 @@ export const Post = () => {
     <>
       <h2>Post Detail</h2>
       <PostView post={post} />
-      <CommentInput />
+      <CommentInput postId={postId} />
       <Comments postId={postId} />
     </>
   );

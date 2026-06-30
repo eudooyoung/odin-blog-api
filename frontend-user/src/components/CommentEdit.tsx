@@ -1,13 +1,13 @@
-import { useComment } from "@/hooks/useComment.ts";
+import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import { useState, type SubmitEventHandler } from "react";
 
 export const CommentEdit = ({ commentContent, onCancel }) => {
-  const { updateComment, commentError, commentLoading } = useComment();
+  const { updateComment, commentError, commentLoading } = useCommentAction();
   const [newCommentContent, setNewCommentContent] = useState(commentContent);
 
   const editCommentHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await updateComment({ newCommentContent });
+    updateComment({ newCommentContent });
   };
 
   return (
