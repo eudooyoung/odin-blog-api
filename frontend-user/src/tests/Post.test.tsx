@@ -65,24 +65,56 @@ describe("Post page", () => {
     });
   });
 
-  it.only("render post details and comments", () => {
-    render(
-      <MemoryRouter>
-        <Post />
-      </MemoryRouter>,
-    );
+  describe("Post component", () => {
+    it("render post details", () => {
+      render(
+        <MemoryRouter>
+          <Post />
+        </MemoryRouter>,
+      );
 
-    expect(
-      screen.getByRole("heading", { name: /mock-title/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/mock-content/i)).toBeInTheDocument();
-    expect(screen.getByText(/20. 1. 1./)).toBeInTheDocument();
-    expect(screen.getByText(/mock-post-author/i)).toBeInTheDocument();
-    expect(screen.getByText(/mock-comment$/i)).toBeInTheDocument();
-    expect(screen.getByText(/mock-comment-author$/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: /mock-title/i }),
+      ).toBeInTheDocument();
+      expect(screen.getByText(/mock-content/i)).toBeInTheDocument();
+      expect(screen.getByText(/20. 1. 1./)).toBeInTheDocument();
+      expect(screen.getByText(/mock-post-author/i)).toBeInTheDocument();
+    });
+
+    it("render loading component while post loading", () => {
+      mockUsePost.mockReturnValueOnce({
+        postLoading: true,
+      });
+      render(
+        <MemoryRouter>
+          <Post />
+        </MemoryRouter>,
+      );
+      expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    });
+
+    it("render error message", () => {
+      mockUsePost.mockReturnValueOnce({
+        postError: new Error("Something goes wrong"),
+      });
+      render(
+        <MemoryRouter>
+          <Post />
+        </MemoryRouter>,
+      );
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        /something goes wrong/i,
+      );
+    });
   });
 
   describe("Comment component", () => {
+    it("render comments", () => {
+      render(<Post />);
+      expect(screen.getByText(/mock-comment$/i)).toBeInTheDocument();
+      expect(screen.getByText(/mock-comment-author$/i)).toBeInTheDocument();
+    });
+
     it("add comment", async () => {
       const user = userEvent.setup();
       const createComment = vi.fn();
@@ -126,7 +158,21 @@ describe("Post page", () => {
       const user = userEvent.setup();
       const updateComment = vi.fn();
       mockUseComment.mockReturnValue({
-        comment: vi.fn(),
+        comments: [
+          {
+            id: 1,
+            content: "mock-comment",
+            authorId: 1,
+            author: "mock-comment-author",
+          },
+          {
+            id: 2,
+            content: "mock-comment2",
+            authorId: 2,
+            author: "mock-comment-author2",
+          },
+        ],
+        createComment: vi.fn(),
         updateComment,
         commentError: null,
         commentLoading: false,
@@ -158,7 +204,21 @@ describe("Post page", () => {
       const user = userEvent.setup();
       const updateComment = vi.fn();
       mockUseComment.mockReturnValue({
-        comment: vi.fn(),
+        comments: [
+          {
+            id: 1,
+            content: "mock-comment",
+            authorId: 1,
+            author: "mock-comment-author",
+          },
+          {
+            id: 2,
+            content: "mock-comment2",
+            authorId: 2,
+            author: "mock-comment-author2",
+          },
+        ],
+        createComment: vi.fn(),
         updateComment,
         commentError: null,
         commentLoading: false,
@@ -187,7 +247,21 @@ describe("Post page", () => {
       const user = userEvent.setup();
       const deleteComment = vi.fn();
       mockUseComment.mockReturnValue({
-        comment: vi.fn(),
+        comments: [
+          {
+            id: 1,
+            content: "mock-comment",
+            authorId: 1,
+            author: "mock-comment-author",
+          },
+          {
+            id: 2,
+            content: "mock-comment2",
+            authorId: 2,
+            author: "mock-comment-author2",
+          },
+        ],
+        createComment: vi.fn(),
         deleteComment,
         commentError: null,
         commentLoading: false,

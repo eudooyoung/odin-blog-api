@@ -5,6 +5,7 @@ import Login from "@/pages/Login.tsx";
 import Signup from "@/pages/Signup.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import Profile from "@/pages/Profile.tsx";
+import { Post } from "@/pages/Post.tsx";
 
 const routes = [
   {
@@ -14,6 +15,7 @@ const routes = [
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
+      { path: "posts/:postId", element: <Post /> },
       {
         element: <ProtectedRoute />,
         children: [{ path: "profile", element: <Profile /> }],

@@ -12,7 +12,10 @@ export const usePost = (postId: number) => {
 
     const getPost = async () => {
       try {
-        const response = await fetch(`${env.apiBaseUrl}/posts/${postId}`);
+        const response = await fetch(`${env.apiBaseUrl}/posts/${postId}`, {
+          method: "get",
+          signal: abortController.signal,
+        });
 
         if (!response.ok) {
           const { error } = await response.json();

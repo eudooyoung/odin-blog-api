@@ -18,7 +18,8 @@ export const usePosts = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`Http Error: Status ${response.status}`);
+          const { error } = await response.json();
+          setPostsError(error);
         }
 
         const data = await response.json();
