@@ -77,9 +77,7 @@ describe("Post page", () => {
       commentLoading: false,
     });
 
-    mockUseCommentAction.mockReturnValue({
-      // createComment: vi.fn()
-    });
+    mockUseCommentAction.mockReturnValue({});
   });
 
   describe("Post component", () => {
@@ -193,8 +191,8 @@ describe("Post page", () => {
         name: /post/i,
       });
       await user.click(commentButton);
-      expect(updateComment).toHaveBeenCalledWith({
-        newCommentContent: "edited comment content",
+      expect(updateComment).toHaveBeenCalledWith(expect.any(Number), {
+        commentContent: "edited comment content",
       });
     });
 
@@ -205,7 +203,7 @@ describe("Post page", () => {
         commentError: null,
         commentLoading: false,
       });
-      mockUseCommentAction.mockReturnValueOnce({
+      mockUseCommentAction.mockReturnValue({
         updateComment: vi.fn(),
       });
       render(

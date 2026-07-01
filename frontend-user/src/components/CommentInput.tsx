@@ -4,7 +4,8 @@ import { useState, type SubmitEventHandler } from "react";
 
 export const CommentInput = ({ postId }: { postId: number }) => {
   const { user } = useAuthContext();
-  const { createComment, commentError, commentLoading } = useCommentAction();
+  const { createComment, commentError, commentLoading } =
+    useCommentAction(postId);
   const [commentContent, setCommentContent] = useState("");
 
   const commentHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
@@ -17,7 +18,7 @@ export const CommentInput = ({ postId }: { postId: number }) => {
 
   return (
     <form onSubmit={commentHandler}>
-      <label htmlFor="commentContet">Comment</label>
+      <label htmlFor="commentContent">Comment</label>
       {!user && (
         <textarea
           name=""
@@ -29,7 +30,7 @@ export const CommentInput = ({ postId }: { postId: number }) => {
         <>
           <textarea
             name="commentContent"
-            id="commentContet"
+            id="commentContent"
             onChange={(e) => setCommentContent(e.target.value)}
             value={commentContent}
             required></textarea>

@@ -1,5 +1,5 @@
 import { env } from "@/lib/env.ts";
-import type { Comments } from "@/types/types.ts";
+import type { Comments } from "@/types/comment.types.ts";
 import { useEffect, useState } from "react";
 
 export const useComments = (postId: number) => {

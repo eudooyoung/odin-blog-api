@@ -5,6 +5,7 @@ export type FetchWithAuthOption = {
   method: string;
   signal?: AbortSignal;
   headers?: HeadersInit;
+  body?: string;
 };
 
 export type AuthContextValue = {
@@ -70,17 +71,3 @@ export type Link = {
 };
 
 export type Links = Link[];
-
-export type Comment = {
-  id: number;
-  content: string;
-  postId: number;
-  authorId: number;
-  author: Pick<User, "id" | "displayName">;
-};
-
-export type Comments = Comment[];
-
-export type CommentValidationError = {
-  content?: string;
-};

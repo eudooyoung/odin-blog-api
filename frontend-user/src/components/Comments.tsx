@@ -8,10 +8,10 @@ export const Comments = ({ postId }: { postId: number }) => {
   const { user } = useAuthContext();
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const { comments } = useComments(postId);
-  const { deleteComment } = useCommentAction();
+  const { deleteComment } = useCommentAction(postId);
 
-  const deleteCommentHandler = async () => {
-    await deleteComment();
+  const deleteCommentHandler = async (commentId: number) => {
+    await deleteComment(commentId);
   };
 
   const cancelButtonHandler = () => {
@@ -25,10 +25,7 @@ export const Comments = ({ postId }: { postId: number }) => {
         comments.map((comment) => (
           <article key={comment.id}>
             {editingCommentId === comment.id ? (
-              <CommentEdit
-                commentContent={comment.content}
-                onCancel={cancelButtonHandler}
-              />
+              <CommentEdit comment={comment} onCancel={cancelButtonHandler} />
             ) : (
               <>
                 <p>{comment.content}</p>
@@ -43,7 +40,9 @@ export const Comments = ({ postId }: { postId: number }) => {
                 </button>
               )}
             {user?.id === comment.author.id && (
-              <button onClick={deleteCommentHandler}>delete</button>
+              <button onClick={() => deleteCommentHandler(comment.id)}>
+                delete
+              </button>
             )}
           </article>
         ))}
