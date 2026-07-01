@@ -1,7 +1,6 @@
 import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import * as lib from "@/lib/fetchWithAuth.ts";
 import type { CommentBody } from "@/types/comment.types.ts";
 
 const { mockUseAuthContext } = vi.hoisted(() => ({
@@ -21,8 +20,8 @@ describe("useCommentAction hook", () => {
 
   describe("create comment action", () => {
     it("create comment success", async () => {
-      const mockNewComment = { commentContent: "new comment" };
-      const spyFetch = vi.spyOn(lib, "fetchWithAuth").mockResolvedValueOnce({
+      const mockNewComment = { content: "new comment" };
+      const spyFetch = vi.spyOn(globalThis, "fetch").mockResolvedValue({
         ok: true,
         status: 201,
         json: () => Promise.resolve({}),
@@ -52,7 +51,7 @@ describe("useCommentAction hook", () => {
     });
 
     it("create comment fails with validation error", async () => {
-      vi.spyOn(lib, "fetchWithAuth").mockResolvedValueOnce({
+      vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
         ok: false,
         status: 400,
         json: () =>
@@ -72,7 +71,7 @@ describe("useCommentAction hook", () => {
     });
 
     it("create comment fails with other server side error", async () => {
-      vi.spyOn(lib, "fetchWithAuth").mockResolvedValueOnce({
+      vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
         ok: false,
         status: 500,
         json: () =>
@@ -90,7 +89,7 @@ describe("useCommentAction hook", () => {
     });
 
     it("create comment fails with fetch error", async () => {
-      vi.spyOn(lib, "fetchWithAuth").mockRejectedValue(
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(
         new Error("Fetch failed"),
       );
       const { result } = renderHook(() => useCommentAction(1));
@@ -104,11 +103,10 @@ describe("useCommentAction hook", () => {
   });
 
   it("update comment success", async () => {
-    const mockUpdatedComment = { commentContent: "updated comment" };
-    const spyFetch = vi.spyOn(lib, "fetchWithAuth").mockResolvedValueOnce({
+    const mockUpdatedComment = { content: "updated comment" };
+    const spyFetch = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
       ok: true,
       status: 204,
-      json: () => Promise.resolve({}),
     } as Response);
     const { result } = renderHook(() => useCommentAction(1));
 
@@ -120,7 +118,7 @@ describe("useCommentAction hook", () => {
       expect(result.current.commentLoading).toBe(false);
     });
     expect(spyFetch).toHaveBeenCalledWith(
-      expect.stringContaining("/posts/1/comments/1"),
+      expect.stringContaining("/comments/1"),
       expect.objectContaining({
         method: "put",
         headers: expect.objectContaining({
@@ -135,7 +133,7 @@ describe("useCommentAction hook", () => {
   });
 
   it("delete comment success", async () => {
-    const spyFetch = vi.spyOn(lib, "fetchWithAuth").mockResolvedValueOnce({
+    const spyFetch = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
       ok: true,
       status: 204,
       json: () => Promise.resolve({}),
@@ -150,7 +148,7 @@ describe("useCommentAction hook", () => {
       expect(result.current.commentLoading).toBe(false);
     });
     expect(spyFetch).toHaveBeenCalledWith(
-      expect.stringContaining("/posts/1/comments/1"),
+      expect.stringContaining("/comments/1"),
       expect.objectContaining({
         method: "delete",
         headers: expect.objectContaining({

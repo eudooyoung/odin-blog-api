@@ -1,34 +1,55 @@
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import type { Comment } from "@/types/types.ts";
-import { useState } from "react";
 import { CommentEdit } from "./CommentEdit.tsx";
 import { useCommentAction } from "@/hooks/useCommentAction.ts";
+import type { CommentViewProps } from "@/types/comment.types.ts";
+import { ErrorMessage } from "./ErrorMessage.tsx";
 
-export const CommentView = ({ comment }: { comment: Comment }) => {
+export const CommentView = ({
+  postId,
+  editingCommentId,
+  setEditingCommentId,
+  comment,
+  refetchComments,
+}: CommentViewProps) => {
   const { user } = useAuthContext();
-  const { deleteComment } = useCommentAction();
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const { deleteComment, commentError, commentLoading } =
+    useCommentAction(postId);
 
-  const cancelButtonHandler = () => {
-    setEditingCommentId(null);
-  };
-
-  const deleteCommentHandler = async () => {
-    await deleteComment();
+  const deleteCommentHandler = async (commentId: number) => {
+    const success = await deleteComment(commentId);
+    if (success) {
+      await refetchComments();
+    }
   };
 
   return (
     <article>
-      <div>
-        <p>{comment.content}</p>
-        <p>{comment.author.displayName}</p>
-      </div>
+      {editingCommentId === comment.id ? (
+        <CommentEdit
+          comment={comment}
+          onCancel={() => setEditingCommentId(null)}
+          onUpdate={() => setEditingCommentId(null)}
+          refetchComments={refetchComments}
+        />
+      ) : (
+        <>
+          <p>{comment.content}</p>
+          <p>{comment.author.displayName}</p>
+        </>
+      )}
 
       {user?.id === comment.author.id && editingCommentId !== comment.id && (
         <button onClick={() => setEditingCommentId(comment.id)}>edit</button>
       )}
       {user?.id === comment.author.id && (
-        <button onClick={deleteCommentHandler}>delete</button>
+        <>
+          <button
+            onClick={() => deleteCommentHandler(comment.id)}
+            disabled={commentLoading}>
+            delete
+          </button>
+          {commentError && <ErrorMessage error={commentError} />}
+        </>
       )}
     </article>
   );

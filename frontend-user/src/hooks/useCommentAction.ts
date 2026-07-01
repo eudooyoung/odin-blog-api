@@ -1,5 +1,4 @@
 import { env } from "@/lib/env.ts";
-import { fetchWithAuth } from "@/lib/fetchWithAuth.ts";
 import { type ValidationErrorResponse } from "@/types/types.ts";
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext.ts";
@@ -21,7 +20,7 @@ export const useCommentAction = (postId: number) => {
     setCommentError(null);
 
     try {
-      const response = await fetchWithAuth(
+      const response = await fetch(
         `${env.apiBaseUrl}/posts/${postId}/comments`,
         {
           method: "post",
@@ -43,12 +42,14 @@ export const useCommentAction = (postId: number) => {
           const { error } = await response.json();
           setCommentError(error);
         }
-        return;
+        return false;
       }
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setCommentError(error);
       }
+      return false;
     } finally {
       setCommentLoading(false);
     }
@@ -60,17 +61,14 @@ export const useCommentAction = (postId: number) => {
     setCommentError(null);
 
     try {
-      const response = await fetchWithAuth(
-        `${env.apiBaseUrl}/posts/${postId}/comments/${commentId}`,
-        {
-          method: "put",
-          headers: {
-            ...(token && { Authorization: token }),
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newComment),
+      const response = await fetch(`${env.apiBaseUrl}/comments/${commentId}`, {
+        method: "put",
+        headers: {
+          ...(token && { Authorization: token }),
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(newComment),
+      });
 
       if (!response.ok) {
         if (response.status === 400) {
@@ -82,8 +80,9 @@ export const useCommentAction = (postId: number) => {
           const { error } = await response.json();
           setCommentError(error);
         }
-        return;
+        return false;
       }
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setCommentError(error);
@@ -98,21 +97,19 @@ export const useCommentAction = (postId: number) => {
     setCommentError(null);
 
     try {
-      const response = await fetchWithAuth(
-        `${env.apiBaseUrl}/posts/${postId}/comments/${commentId}`,
-        {
-          method: "delete",
-          headers: {
-            ...(token && { Authorization: token }),
-          },
+      const response = await fetch(`${env.apiBaseUrl}/comments/${commentId}`, {
+        method: "delete",
+        headers: {
+          ...(token && { Authorization: token }),
         },
-      );
+      });
 
       if (!response.ok) {
         const { error } = await response.json();
         setCommentError(error);
-        return;
+        return false;
       }
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setCommentError(error);
