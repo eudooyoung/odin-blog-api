@@ -1,41 +1,48 @@
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import { useComment } from "@/hooks/useComment.ts";
+import { useCommentAction } from "@/hooks/useCommentAction.ts";
+import type { CommentInputProps } from "@/types/comment.types.ts";
 import { useState, type SubmitEventHandler } from "react";
+import { ErrorMessage } from "./ErrorMessage.tsx";
 
-export const CommentInput = () => {
+export const CommentInput = ({
+  postId,
+  refetchComments,
+}: CommentInputProps) => {
   const { user } = useAuthContext();
-  const { createComment, commentError, commentLoading } = useComment();
+  const {
+    createComment,
+    commentValidationError,
+    commentError,
+    commentLoading,
+  } = useCommentAction(postId);
   const [commentContent, setCommentContent] = useState("");
 
   const commentHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    if (!commentError) {
+
+    const success = await createComment({ content: commentContent });
+    if (success) {
       setCommentContent("");
+      await refetchComments();
     }
-    await createComment({ commentContent });
   };
 
   return (
     <form onSubmit={commentHandler}>
-      <label htmlFor="commentContet">Comment</label>
-      {!user && (
-        <textarea
-          name=""
-          id=""
-          disabled
-          placeholder="login to leave a comment"></textarea>
-      )}
-      {user && (
-        <>
-          <textarea
-            name="commentContent"
-            id="commentContet"
-            onChange={(e) => setCommentContent(e.target.value)}
-            value={commentContent}
-            required></textarea>
-          <button type="submit">comment</button>
-        </>
-      )}
+      <label htmlFor="commentContent">Comment</label>
+      <textarea
+        name="commentContent"
+        id="commentContent"
+        onChange={(e) => setCommentContent(e.target.value)}
+        value={commentContent}
+        placeholder={user ? "leave a commnent" : "login to leave a comment"}
+        disabled={user ? false : true}
+        required></textarea>
+      {commentValidationError && <p>{commentValidationError.content}</p>}
+      <button type="submit" disabled={commentLoading || !user}>
+        comment
+      </button>
+      {commentError && <ErrorMessage error={commentError} />}
     </form>
   );
 };

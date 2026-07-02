@@ -5,6 +5,7 @@ export type FetchWithAuthOption = {
   method: string;
   signal?: AbortSignal;
   headers?: HeadersInit;
+  body?: string;
 };
 
 export type AuthContextValue = {
@@ -29,7 +30,6 @@ export type Post = {
   content: string;
   published: boolean;
   createdAt: string;
-  authorId: number;
   author: Pick<User, "id" | "displayName">;
 };
 

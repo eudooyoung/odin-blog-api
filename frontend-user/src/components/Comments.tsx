@@ -1,49 +1,27 @@
-import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import { useComment } from "@/hooks/useComment.ts";
 import { useState } from "react";
-import { CommentEdit } from "./CommentEdit.tsx";
+import type { CommentsProps } from "@/types/comment.types.ts";
+import { CommentView } from "./CommentView.tsx";
 
-export const Comments = ({ postId }: { postId: number }) => {
-  const { user } = useAuthContext();
+export const Comments = ({
+  postId,
+  comments,
+  refetchComments,
+}: CommentsProps) => {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const { comments, deleteComment } = useComment(postId);
-
-  const deleteCommentHandler = async () => {
-    await deleteComment();
-  };
-
-  const cancelButtonHandler = () => {
-    setEditingCommentId(null);
-  };
 
   return (
     <section>
       <h3>Comments</h3>
       {comments &&
         comments.map((comment) => (
-          <article key={comment.id}>
-            {editingCommentId === comment.id ? (
-              <CommentEdit
-                commentContent={comment.content}
-                onCancel={cancelButtonHandler}
-              />
-            ) : (
-              <>
-                <p>{comment.content}</p>
-                <p>{comment.author}</p>
-              </>
-            )}
-
-            {user?.id === comment.authorId &&
-              setEditingCommentId !== comment.id && (
-                <button onClick={() => setEditingCommentId(comment.id)}>
-                  edit
-                </button>
-              )}
-            {user?.id === comment.authorId && (
-              <button onClick={deleteCommentHandler}>delete</button>
-            )}
-          </article>
+          <CommentView
+            key={comment.id}
+            postId={postId}
+            editingCommentId={editingCommentId}
+            setEditingCommentId={setEditingCommentId}
+            comment={comment}
+            refetchComments={refetchComments}
+          />
         ))}
     </section>
   );

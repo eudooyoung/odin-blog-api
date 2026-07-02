@@ -20,6 +20,7 @@ export const usePost = (postId: number) => {
         if (!response.ok) {
           const { error } = await response.json();
           setPostError(error);
+          return;
         }
 
         const post = await response.json();
