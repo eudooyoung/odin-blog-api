@@ -1,0 +1,10 @@
+.app {
+  margin: auto;
+  max-width: calc(1980px * 0.8);
+  min-height: 95dvh;
+  background-color: var(--background-color);
+
+  display: grid;
+  grid-template-rows: 10rem auto 5rem;
+  row-gap: 2rem;
+}

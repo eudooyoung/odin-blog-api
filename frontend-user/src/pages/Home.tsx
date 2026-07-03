@@ -1,11 +1,12 @@
-import Posts from "@/components/Posts.tsx";
+import Posts from "@/components/Posts";
+import styles from "./Home.module.css";
 
 const Home = () => {
   return (
-    <>
-      <h2>Home</h2>
+    <section className={styles.home}>
+      <h2 className={styles.homeHeader}>Home</h2>
       <Posts />
-    </>
+    </section>
   );
 };
 

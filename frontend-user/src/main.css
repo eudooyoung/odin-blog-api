@@ -1,0 +1,18 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* --background-color: #afcfef; */
+  /* --post-background-color-hovered: #7f9f9f; */
+}
+
+#root {
+  padding: 1rem 5rem;
+  min-height: 100dvh;
+  background-color: var(--background-color);
+}

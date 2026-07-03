@@ -1,8 +1,8 @@
-import { CommentInput } from "@/components/CommentInput.tsx";
-import { Comments } from "@/components/Comments.tsx";
-import { ErrorMessage } from "@/components/ErrorMessage.tsx";
-import { Loading } from "@/components/Loading.tsx";
-import { PostView } from "@/components/PostView.tsx";
+import { CommentInput } from "@/components/CommentInput";
+import { Comments } from "@/components/Comments";
+import { ErrorMessage } from "@/components/ErrorMessage";
+import { Loading } from "@/components/Loading";
+import { PostView } from "@/components/PostView";
 import { useComments } from "@/hooks/useComments.ts";
 import { usePost } from "@/hooks/usePost.ts";
 import { useParams } from "react-router";
