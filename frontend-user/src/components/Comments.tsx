@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CommentsProps } from "@/types/comment.types.ts";
 import { CommentView } from "./CommentView.tsx";
+import { CommentEdit } from "./CommentEdit.tsx";
 
 export const Comments = ({
   postId,
@@ -14,14 +15,26 @@ export const Comments = ({
       <h3>Comments</h3>
       {comments &&
         comments.map((comment) => (
-          <CommentView
-            key={comment.id}
-            postId={postId}
-            editingCommentId={editingCommentId}
-            setEditingCommentId={setEditingCommentId}
-            comment={comment}
-            refetchComments={refetchComments}
-          />
+          <article key={comment.id}>
+            {editingCommentId === comment.id ? (
+              <CommentEdit
+                key={comment.id}
+                comment={comment}
+                onCancel={() => setEditingCommentId(null)}
+                onUpdate={() => setEditingCommentId(null)}
+                refetchComments={refetchComments}
+              />
+            ) : (
+              <CommentView
+                key={comment.id}
+                postId={postId}
+                editingCommentId={editingCommentId}
+                setEditingCommentId={setEditingCommentId}
+                comment={comment}
+                refetchComments={refetchComments}
+              />
+            )}
+          </article>
         ))}
     </section>
   );

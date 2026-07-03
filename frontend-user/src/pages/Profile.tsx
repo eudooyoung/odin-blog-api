@@ -1,17 +1,13 @@
-import ProfileEdit from "@/components/ProfileEdit.tsx";
 import ProfileView from "@/components/ProfileView.tsx";
-import { useState } from "react";
+import { useAuthContext } from "@/hooks/useAuthContext.ts";
 
 const Profile = () => {
-  const [isEdit, setIsEdit] = useState(false);
-  const editButtonHandler = () => {
-    setIsEdit(true);
-  };
+  const { user } = useAuthContext();
+
   return (
     <>
       <h2>Profile</h2>
-      {!isEdit && <ProfileView editButtonHandler={editButtonHandler} />}
-      {isEdit && <ProfileEdit />}
+      <ProfileView user={user!} />
     </>
   );
 };

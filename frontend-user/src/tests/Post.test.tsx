@@ -231,13 +231,15 @@ describe("Post page", () => {
         const editButton = screen.getByRole("button", { name: /edit/i });
         const editingComment = editButton.closest("article") as HTMLElement;
         await user.click(editButton);
+        screen.debug(editingComment);
+
         const updateCommentInput = within(editingComment).getByRole("textbox", {
           name: /edit comment/i,
         });
         await user.clear(updateCommentInput);
         await user.type(updateCommentInput, "edited comment content");
         const commentButton = within(editingComment).getByRole("button", {
-          name: /post/i,
+          name: /save/i,
         });
         await user.click(commentButton);
         await waitFor(() => {

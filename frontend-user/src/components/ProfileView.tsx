@@ -1,18 +1,10 @@
-import { useAuthContext } from "@/hooks/useAuthContext.ts";
+import type { User } from "@/types/types.ts";
 
-const ProfileView = ({
-  editButtonHandler,
-}: {
-  editButtonHandler: () => void;
-}) => {
-  const { user } = useAuthContext();
+const ProfileView = ({ user }: { user: User }) => {
   return (
     <div>
       <p>username: {user?.username}</p>
       <p>display name: {user?.displayName}</p>
-      <button onClick={editButtonHandler} type="button">
-        edit
-      </button>
     </div>
   );
 };
