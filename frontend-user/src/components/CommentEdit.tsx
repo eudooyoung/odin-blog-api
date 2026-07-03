@@ -40,7 +40,7 @@ export const CommentEdit = ({
         required></textarea>
       {commentValidationError && <p>{commentValidationError.content}</p>}
       <button type="submit" disabled={commentLoading}>
-        post
+        save
       </button>
       <button onClick={onCancel}>cancel</button>
       {commentError && <ErrorMessage error={commentError} />}

@@ -1,5 +1,4 @@
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import { CommentEdit } from "./CommentEdit.tsx";
 import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import type { CommentViewProps } from "@/types/comment.types.ts";
 import { ErrorMessage } from "./ErrorMessage.tsx";
@@ -23,20 +22,9 @@ export const CommentView = ({
   };
 
   return (
-    <article>
-      {editingCommentId === comment.id ? (
-        <CommentEdit
-          comment={comment}
-          onCancel={() => setEditingCommentId(null)}
-          onUpdate={() => setEditingCommentId(null)}
-          refetchComments={refetchComments}
-        />
-      ) : (
-        <>
-          <p>{comment.content}</p>
-          <p>{comment.author.displayName}</p>
-        </>
-      )}
+    <>
+      <p>{comment.content}</p>
+      <p>{comment.author.displayName}</p>
 
       {user?.id === comment.author.id && editingCommentId !== comment.id && (
         <button onClick={() => setEditingCommentId(comment.id)}>edit</button>
@@ -51,6 +39,6 @@ export const CommentView = ({
           {commentError && <ErrorMessage error={commentError} />}
         </>
       )}
-    </article>
+    </>
   );
 };
