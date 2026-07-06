@@ -29,13 +29,8 @@ const SignupForm = () => {
 
   const signupHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await signup(form);
-    if (
-      !signupLoading &&
-      Object.keys(signupValidationError).length === 0 &&
-      signupError === null
-    ) {
-      console.log(signupValidationError);
+    const success = await signup(form);
+    if (success) {
       navigate("/login", { state: { message: "signup success" } });
     }
   };

@@ -21,7 +21,7 @@ describe("Signup page", () => {
       return navigate;
     });
     mockUseSignup.mockImplementation(() => ({
-      signup: () => {},
+      signup: vi.fn().mockReturnValue(true),
       signupLoading: false,
       signupValidationError: {},
       signupError: null,

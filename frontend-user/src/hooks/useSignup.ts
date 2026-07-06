@@ -37,12 +37,14 @@ export const useSignup = () => {
           const { error } = await response.json();
           setSignupError(error);
         }
-        return;
+        return false;
       }
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setSignupError(error);
       }
+      return false;
     } finally {
       setSignupLoading(false);
     }
