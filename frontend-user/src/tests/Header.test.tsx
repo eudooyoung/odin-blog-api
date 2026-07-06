@@ -1,4 +1,4 @@
-import Header from "@/components/Header.tsx";
+import Header from "@/components/header/Header.tsx";
 import { AuthContext } from "@/context/AuthContext.ts";
 import type { AuthContextValue } from "@/types/types.ts";
 import { render, screen } from "@testing-library/react";

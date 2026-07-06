@@ -1,4 +1,4 @@
-import Home from "@/pages/Home.tsx";
+import Home from "@/pages/home/Home.tsx";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router";

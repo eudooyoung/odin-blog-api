@@ -1,0 +1,17 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+#root {
+  min-height: 100dvh;
+
+  display: flex;
+}

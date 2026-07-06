@@ -1,0 +1,11 @@
+.app {
+  flex: 1;
+
+  margin: 0 auto;
+  max-width: 1200px;
+  background-color: white;
+
+  display: grid;
+  grid-template-rows: 12rem auto 5rem;
+  justify-items: center;
+}

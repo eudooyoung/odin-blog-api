@@ -1,0 +1,33 @@
+.posts {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.postThumbnail {
+  min-height: 9rem;
+  border: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.postThumbnailHeader {
+  padding-left: 1rem;
+}
+
+.postThumbnailContent {
+  margin: 0 auto;
+  max-width: 90%;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.postThumbnailDate {
+  padding-left: 1rem;
+}

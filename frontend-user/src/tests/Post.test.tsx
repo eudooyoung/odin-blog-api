@@ -231,7 +231,6 @@ describe("Post page", () => {
         const editButton = screen.getByRole("button", { name: /edit/i });
         const editingComment = editButton.closest("article") as HTMLElement;
         await user.click(editButton);
-        screen.debug(editingComment);
 
         const updateCommentInput = within(editingComment).getByRole("textbox", {
           name: /edit comment/i,

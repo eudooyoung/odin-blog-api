@@ -1,4 +1,4 @@
-import Login from "@/pages/Login.tsx";
+import Login from "@/pages/login/Login.tsx";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
