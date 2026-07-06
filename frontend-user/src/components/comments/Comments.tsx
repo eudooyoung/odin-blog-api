@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { CommentsProps } from "@/types/comment.types.ts";
-import { CommentView } from "./CommentView.tsx";
-import { CommentEdit } from "./CommentEdit.tsx";
+import { CommentView } from "../comment-view/CommentView.tsx";
+import { CommentEdit } from "../comment-edit/CommentEdit.tsx";
+import styles from "./Comments.module.css";
 
 export const Comments = ({
   postId,
@@ -11,11 +12,11 @@ export const Comments = ({
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
 
   return (
-    <section>
-      <h3>Comments</h3>
+    <section className={styles.comments}>
+      <h3 className={styles.commentsHeader}>Comments</h3>
       {comments &&
         comments.map((comment) => (
-          <article key={comment.id}>
+          <article className={styles.comment} key={comment.id}>
             {editingCommentId === comment.id ? (
               <CommentEdit
                 key={comment.id}

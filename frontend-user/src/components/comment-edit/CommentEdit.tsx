@@ -1,7 +1,8 @@
 import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import type { CommentEditProps } from "@/types/comment.types.ts";
 import { useState, type SubmitEventHandler } from "react";
-import { ErrorMessage } from "./ErrorMessage.tsx";
+import { ErrorMessage } from "../ErrorMessage.tsx";
+import styles from "./CommentEdit.module.css";
 
 export const CommentEdit = ({
   comment,
@@ -30,19 +31,24 @@ export const CommentEdit = ({
   };
 
   return (
-    <form onSubmit={editCommentHandler}>
-      <label htmlFor="editCommentContent">edit comment</label>
+    <form className={styles.commentEditForm} onSubmit={editCommentHandler}>
+      <label htmlFor="editCommentContent" hidden>
+        edit comment
+      </label>
       <textarea
+        className={styles.commentEditInput}
         name="editCommentContent"
         id="editCommentContent"
         onChange={(e) => setNewCommentContent(e.target.value)}
         value={newCommentContent}
         required></textarea>
       {commentValidationError && <p>{commentValidationError.content}</p>}
-      <button type="submit" disabled={commentLoading}>
-        save
-      </button>
-      <button onClick={onCancel}>cancel</button>
+      <div className={styles.commentEditButtons}>
+        <button type="submit" disabled={commentLoading}>
+          save
+        </button>
+        <button onClick={onCancel}>cancel</button>
+      </div>
       {commentError && <ErrorMessage error={commentError} />}
     </form>
   );

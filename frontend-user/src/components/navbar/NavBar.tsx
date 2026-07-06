@@ -1,10 +1,10 @@
 import type { Links } from "@/types/types.ts";
 import { NavLink } from "react-router";
-import styles from "../App.module.css";
+import styles from "./NavBar.module.css";
 
 const NavBar = ({ links }: { links: Links }) => {
   return (
-    <nav className={styles.links}>
+    <nav className={styles.navLinks}>
       {links.map((link, idx) => (
         <NavLink key={idx} to={link.to}>
           {link.name}

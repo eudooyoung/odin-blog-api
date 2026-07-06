@@ -1,0 +1,20 @@
+.commentEditForm {
+  min-height: 5rem;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.2rem;
+}
+
+.commentEditInput {
+  flex: 1;
+  resize: none;
+}
+
+.commentEditButtons {
+  display: flex;
+  justify-content: end;
+  column-gap: 0.5rem;
+}

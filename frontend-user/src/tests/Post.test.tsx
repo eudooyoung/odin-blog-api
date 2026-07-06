@@ -1,4 +1,4 @@
-import { Post } from "@/pages/Post.tsx";
+import { Post } from "@/pages/post/Post";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";

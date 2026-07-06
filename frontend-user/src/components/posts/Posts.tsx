@@ -7,7 +7,7 @@ const Posts = () => {
 
   return (
     <>
-      {postsLoading && <span>loading...</span>}
+      {/* {postsLoading && <span>loading...</span>} */}
       {postsError && <span>{postsError.message}</span>}
       {posts && (
         <div className={styles.posts}>

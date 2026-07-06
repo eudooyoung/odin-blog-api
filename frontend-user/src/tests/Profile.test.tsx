@@ -1,4 +1,4 @@
-import Profile from "@/pages/Profile.tsx";
+import Profile from "@/pages/profile/Profile";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
