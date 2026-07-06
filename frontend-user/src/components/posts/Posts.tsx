@@ -1,33 +1,32 @@
 import { usePosts } from "@/hooks/usePosts";
 import { Link } from "react-router";
-import styles from "../pages/Home.module.css";
+import styles from "./Posts.module.css";
 
 const Posts = () => {
   const { posts, postsError, postsLoading } = usePosts();
 
   return (
-    <section className={styles.postsWrapper}>
-      <h3>Posts</h3>
+    <>
       {postsLoading && <span>loading...</span>}
       {postsError && <span>{postsError.message}</span>}
       {posts && (
         <div className={styles.posts}>
           {posts.map((post) => (
-            <section className={styles.post} key={post.id}>
-              <h4>
+            <section className={styles.postThumbnail} key={post.id}>
+              <h4 className={styles.postThumbnailHeader}>
                 <Link to={`/posts/${post.id}`}>{post.title}</Link>
               </h4>
-              <p>{post.content}</p>
-              <footer className={styles.postThumbnailDate}>
+              <p className={styles.postThumbnailContent}>{post.content}</p>
+              <p className={styles.postThumbnailDate}>
                 {new Intl.DateTimeFormat("ko-KR", {
                   dateStyle: "short",
                 }).format(new Date(post.createdAt))}
-              </footer>
+              </p>
             </section>
           ))}
         </div>
       )}
-    </section>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import Signup from "@/pages/Signup.tsx";
+import Signup from "@/pages/signup/Signup.tsx";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";

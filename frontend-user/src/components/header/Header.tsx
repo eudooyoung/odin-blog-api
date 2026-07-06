@@ -1,7 +1,7 @@
-import NavBar from "./NavBar.tsx";
+import NavBar from "../NavBar.tsx";
 import { authLinks, publicLinks } from "@/lib/link.ts";
 import { useAuthContext } from "@/hooks/useAuthContext.ts";
-import LogoutButton from "./LogoutButton.tsx";
+import LogoutButton from "../LogoutButton.tsx";
 import styles from "./Header.module.css";
 
 const Header = () => {

@@ -31,6 +31,7 @@ export const useSignup = () => {
           const { errors }: { errors: ValidationErrorResponse[] } =
             await response.json();
           const errorSource = errors.map((error) => [error.path, error.msg]);
+          console.log(Object.fromEntries(errorSource));
           setSignupValidationError(Object.fromEntries(errorSource));
         } else {
           const { error } = await response.json();

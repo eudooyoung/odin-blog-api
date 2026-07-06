@@ -1,5 +1,5 @@
 import { AuthContext } from "@/context/AuthContext.ts";
-import Login from "@/pages/Login.tsx";
+import Login from "@/pages/login/Login.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
 import type { AuthContextValue } from "@/types/types.ts";
 import { render, screen } from "@testing-library/react";

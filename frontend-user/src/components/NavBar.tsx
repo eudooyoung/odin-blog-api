@@ -1,6 +1,6 @@
 import type { Links } from "@/types/types.ts";
 import { NavLink } from "react-router";
-import styles from "./Header.module.css";
+import styles from "../App.module.css";
 
 const NavBar = ({ links }: { links: Links }) => {
   return (
