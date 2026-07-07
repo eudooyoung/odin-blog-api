@@ -21,3 +21,14 @@ export type LoginBody = {
   username: string;
   password: string;
 };
+
+export type Post = {
+  id: number;
+  title: string;
+  content: string;
+  published: boolean;
+  createdAt: string;
+  author: Pick<User, "id" | "displayName">;
+};
+
+export type Posts = Post[];

@@ -22,8 +22,8 @@ const LoginForm = () => {
 
   const loginHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await login(form);
-    if (!loginError) {
+    const success = await login(form);
+    if (success) {
       navigate("/");
     }
   };

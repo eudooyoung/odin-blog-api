@@ -13,7 +13,7 @@ export const useLogin = () => {
       setLoginLoading(true);
       setLoginError(null);
 
-      const response = await fetch(`${env.apiBaseUrl}/auth/login`, {
+      const response = await fetch(`${env.apiBaseUrl}/auth/admin/login`, {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -21,18 +21,19 @@ export const useLogin = () => {
 
       if (!response.ok) {
         if (response.status === 401) {
-          setLoginError(new Error("Invalid username or password"));
+          throw new Error("Invalid username or password");
         } else {
           const { error } = await response.json();
-          setLoginError(error);
+          throw new Error(error.message);
         }
-        return;
       }
 
       const { user, token } = await response.json();
       setUser(user);
       setToken(token);
       localStorage.setItem("token", token);
+
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setLoginError(error);
