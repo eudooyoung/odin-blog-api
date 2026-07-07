@@ -6,12 +6,34 @@
   box-sizing: border-box;
 }
 
+:root {
+  --header-font: "Nunito", sans-serif;
+  --body-font: "inter", sans-serif;
+}
+
 html {
   scrollbar-gutter: stable both-edges;
 }
 
 #root {
   min-height: 100dvh;
+  font-family: var(--body-font);
 
   display: flex;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--header-font);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
 }

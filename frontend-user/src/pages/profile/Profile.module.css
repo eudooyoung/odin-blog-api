@@ -1,0 +1,9 @@
+.profile {
+  display: grid;
+  grid-template-rows: 5rem auto;
+  align-items: center;
+}
+
+.profileHeader {
+  padding: 0 1rem;
+}

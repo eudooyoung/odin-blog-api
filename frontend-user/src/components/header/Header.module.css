@@ -1,10 +1,31 @@
 .header {
   align-self: center;
 
+  background: #f1f1f1;
+  min-height: 9rem;
   width: 100%;
   max-width: 1000px;
+
+  box-shadow: 0 1px 1px #ccc;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .banner {
-  padding-left: 5rem;
+  padding: 0 1rem;
+  letter-spacing: -0.05rem;
+}
+
+.statusAndLinks {
+  padding: 0 3rem;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.status {
+  display: flex;
+  column-gap: 1rem;
 }

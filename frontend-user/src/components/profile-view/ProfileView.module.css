@@ -1,0 +1,26 @@
+.profileView {
+  justify-self: center;
+
+  background-color: #f5f5f5;
+  min-height: 12rem;
+  width: 100%;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 2rem;
+}
+
+.profileField {
+  width: 100%;
+  max-width: 250px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.profileLabel {
+  font-weight: bold;
+}
