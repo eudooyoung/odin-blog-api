@@ -8,7 +8,7 @@ export const requireAuth = passportConfig.authenticate("jwt", {
   session: false,
 }) as RequestHandler;
 
-const verifyAdmin: RequestHandler = (req, res, next) => {
+export const verifyAdmin: RequestHandler = (req, res, next) => {
   if (req.user!.role !== "ADMIN") {
     throw new ForbiddenError();
   }
