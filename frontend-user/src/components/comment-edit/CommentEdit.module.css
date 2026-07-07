@@ -11,6 +11,7 @@
 .commentEditInput {
   flex: 1;
   resize: none;
+  padding: 0.5rem;
 }
 
 .commentEditButtons {

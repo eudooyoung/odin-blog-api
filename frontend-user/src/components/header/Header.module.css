@@ -15,7 +15,7 @@
 
 .banner {
   padding: 0 1rem;
-  font-family: var(--header-font);
+  letter-spacing: -0.05rem;
 }
 
 .statusAndLinks {

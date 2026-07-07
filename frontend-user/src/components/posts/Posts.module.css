@@ -5,21 +5,28 @@
 }
 
 .postThumbnail {
+  padding: 1rem 0;
   min-height: 9rem;
-  border: 1px solid black;
+  box-shadow: 0 0 1px black;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  row-gap: 1rem;
 }
 
 .postThumbnailHeader {
   padding-left: 1rem;
+  letter-spacing: 0.05rem;
+}
+
+.postThumbnailHeader:hover {
+  text-decoration: underline;
 }
 
 .postThumbnailContent {
   margin: 0 auto;
   max-width: 90%;
+  line-height: 1.3rem;
 
   display: -webkit-box;
   -webkit-line-clamp: 3;

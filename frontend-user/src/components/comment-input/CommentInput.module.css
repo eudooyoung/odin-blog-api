@@ -11,7 +11,8 @@
 }
 
 .commentInput {
-  height: 5rem;
+  min-height: 5rem;
+  padding: 0.5rem;
   resize: none;
 }
 

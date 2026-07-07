@@ -3,3 +3,7 @@
   justify-content: flex-end;
   column-gap: 2rem;
 }
+
+a.active {
+  text-decoration: underline !important;
+}
