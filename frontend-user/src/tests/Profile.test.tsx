@@ -1,83 +1,32 @@
-import { AuthContext } from "@/context/AuthContext.ts";
-import Profile from "@/pages/Profile.tsx";
-import type { AuthContextValue } from "@/types/types.ts";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import Profile from "@/pages/profile/Profile";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-describe.skip("Profile page", () => {
-  it("user info displayed", () => {
-    render(
-      <AuthContext
-        value={
-          {
-            token: "token",
-            user: {
-              username: "mock-username",
-              displayName: "mock-display-name",
-            },
-          } as AuthContextValue
-        }>
-        <Profile />
-      </AuthContext>,
-    );
+const { mockUseAuthContext } = vi.hoisted(() => ({
+  mockUseAuthContext: vi.fn(),
+  mockUseProfile: vi.fn(),
+}));
 
-    const username = screen.getByText(/mock-username/i);
-    expect(username).toBeInTheDocument();
-    const displayName = screen.getByText(/mock-display-name/);
-    expect(displayName).toBeInTheDocument();
-  });
+vi.mock("@/hooks/useAuthContext", () => ({
+  useAuthContext: mockUseAuthContext,
+}));
 
-  it("change into edit mode when edit button clicked", async () => {
-    const user = userEvent.setup();
-    render(
-      <AuthContext
-        value={
-          {
-            token: "token",
-            user: {
-              username: "mock-username",
-              displayName: "mock-display-name",
-            },
-          } as AuthContextValue
-        }>
-        <Profile />
-      </AuthContext>,
-    );
-
-    const editButton = screen.getByRole("button", { name: /edit/i });
-    await user.click(editButton);
-    expect(editButton).not.toBeInTheDocument();
-  });
-
-  it("change display name", async () => {
-    const user = userEvent.setup();
-    const newDisplayName = "modified-display-name";
-    render(
-      <AuthContext
-        value={
-          {
-            token: "token",
-            user: {
-              username: "mock-username",
-              displayName: "mock-display-name",
-            },
-          } as AuthContextValue
-        }>
-        <Profile />
-      </AuthContext>,
-    );
-
-    const editButton = screen.getByRole("button", { name: /edit/i });
-    await user.click(editButton);
-
-    const displayNameInput = screen.getByRole("textbox", {
-      name: /display name/i,
+describe("Profile page", () => {
+  beforeEach(() => {
+    mockUseAuthContext.mockReturnValue({
+      user: { username: "mock-username", displayName: "mock-name" },
     });
-    await user.type(displayNameInput, newDisplayName);
-    const saveButton = screen.getByRole("button", { name: /save/i });
-    await user.click(saveButton);
-    const displayNameView = screen.getByText(`display name: ${newDisplayName}`);
-    expect(displayNameView).toBeInTheDocument();
+  });
+
+  it("display user info", () => {
+    render(
+      <MemoryRouter>
+        <Profile />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/mock-username/i)).toBeInTheDocument();
+    expect(screen.getByText(/mock-name/i)).toBeInTheDocument();
   });
 });

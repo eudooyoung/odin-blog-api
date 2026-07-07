@@ -9,7 +9,11 @@ describe("usePost hook", () => {
       title: "mock-title",
       content: "mock-content",
       createdAt: "2020-01-01T00:00:00.000Z",
-      author: "mock-author",
+      authorId: 1,
+      author: {
+        id: 1,
+        displayName: "mock-post-author",
+      },
     };
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
