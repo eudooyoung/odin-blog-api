@@ -1,7 +1,7 @@
 import { Router, type RequestHandler } from "express";
 import passport from "@/config/passport.config.js";
 import { getStatus, loginHandler } from "@/controllers/auth.controller.js";
-import { requireAuth } from "@/middlewares/auth.middleware.js";
+import { requireAuth, verifyAdmin } from "@/middlewares/auth.middleware.js";
 
 const authRouter = Router();
 
@@ -10,6 +10,12 @@ authRouter
   .post(
     "/login",
     passport.authenticate("local", { session: false }) as RequestHandler,
+    loginHandler,
+  )
+  .post(
+    "/admin/login",
+    passport.authenticate("local", { session: false }) as RequestHandler,
+    verifyAdmin,
     loginHandler,
   );
 

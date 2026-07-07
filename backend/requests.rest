@@ -23,6 +23,15 @@ Content-type: application/json
   "password": "qwerQWER1234!@#$"
 }
 
+### Require Admin Login
+POST {{baseUrl}}/auth/admin/login
+Content-Type: application/json
+
+{
+  "username": "user@user.com",
+  "password": "qwerQWER1234!@#$"
+}
+
 ### Get auth status
 GET {{baseUrl}}/auth/status
 Authorization: {{adminToken}}
