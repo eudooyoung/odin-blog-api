@@ -1,5 +1,9 @@
 import { prisma } from "@/lib/prisma.js";
-import type { CreatePostInput, UpdatePostInput } from "@/types/post.types.js";
+import type {
+  CreatePostInput,
+  UpdatePostInput,
+  UpdatePostPublishedInput,
+} from "@/types/post.types.js";
 
 export const findAllPublishedPosts = async () => {
   const posts = await prisma.post.findMany({
@@ -83,6 +87,24 @@ export const updatePostById = async ({
     data: {
       title,
       content,
+      published,
+    },
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return updatedId;
+};
+
+export const updatePostPublishedById = async ({
+  id,
+  published,
+}: UpdatePostPublishedInput) => {
+  const updatedId = await prisma.post.update({
+    data: {
       published,
     },
     where: {

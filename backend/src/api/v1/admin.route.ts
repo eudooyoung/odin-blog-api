@@ -3,6 +3,7 @@ import {
   getAllPostsAdmin,
   getPostAdmin,
   insertPost,
+  patchPostPublished,
   updatePost,
 } from "@/controllers/post.controller.js";
 import { requireAdmin, verifyAdmin } from "@/middlewares/auth.middleware.js";
@@ -30,6 +31,7 @@ adminRouter
   .get("/posts/:postId", getPostAdmin)
   .post("/posts", insertPost)
   .put("/posts/:postId", updatePost)
+  .patch("/posts/:postId/published", patchPostPublished)
   .delete("/posts/:postId", deletePost)
 
   .put("/comments/:commentId", updateComment)

@@ -21,3 +21,12 @@ Authorization: {{adminToken}}
 ### Get a post
 GET {{baseUrl}}/posts/3
 Authorization: {{adminToken}}
+
+### publish a post
+PATCH {{baseUrl}}/posts/5/published
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+  "published" : true
+}
