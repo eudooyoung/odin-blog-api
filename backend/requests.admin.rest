@@ -1,0 +1,19 @@
+@baseUrl=http://localhost:3000/api/v1/admin
+
+### Require Admin Login
+# @name adminLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@admin.com",
+  "password": "wertWERT2345@#$%"
+}
+
+### 
+@adminToken = {{adminLogin.response.body.$.token}}
+
+
+### Get all posts
+GET {{baseUrl}}/posts
+Authorization: {{adminToken}}

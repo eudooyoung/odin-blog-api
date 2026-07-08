@@ -23,14 +23,6 @@ const verifyOwner: RequestHandler = (req, res, next) => {
   next();
 };
 
-const verifyOwnerOrAdmin: RequestHandler = (req, res, next) => {
-  const userId = Number(req.params.userId);
-  if (req.user!.id !== userId && req.user!.role !== "ADMIN") {
-    throw new ForbiddenError();
-  }
-  next();
-};
-
 export const verifyCommentOwner: RequestHandler = async (req, res, next) => {
   const comment = await findCommentById(Number(req.params.commentId));
   if (!comment) {
@@ -67,9 +59,9 @@ export const verifyCommentOwnerOrAdmin: RequestHandler = async (
 
 export const requireAdmin: RequestHandler[] = [requireAuth, verifyAdmin];
 
-export const requireOwner: RequestHandler[] = [requireAuth, verifyOwner];
+export const requireAccountOwner: RequestHandler[] = [requireAuth, verifyOwner];
 
-export const requireOwnerOrAdmin: RequestHandler[] = [
+export const requireCommentOwner: RequestHandler[] = [
   requireAuth,
-  verifyOwnerOrAdmin,
+  verifyCommentOwner,
 ];

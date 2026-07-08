@@ -1,8 +1,4 @@
 import {
-  verifyCommentOwner,
-  verifyCommentOwnerOrAdmin,
-} from "@/middlewares/auth.middleware.js";
-import {
   createCommentByPostAndUserId,
   deleteCommentById,
   findAllComments,
@@ -43,15 +39,9 @@ const updateCommentHandler: RequestHandler = async (req, res) => {
   res.sendStatus(204);
 };
 
-export const updateComment = [
-  ...validateCommentHandler,
-  verifyCommentOwner,
-  updateCommentHandler,
-];
+export const updateComment = [...validateCommentHandler, updateCommentHandler];
 
-const deleteCommentHandler: RequestHandler = async (req, res) => {
+export const deleteComment: RequestHandler = async (req, res) => {
   await deleteCommentById(Number(req.params.commentId));
   res.sendStatus(204);
 };
-
-export const deleteComment = [verifyCommentOwnerOrAdmin, deleteCommentHandler];
