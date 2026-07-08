@@ -6,6 +6,7 @@ import {
   findPostById,
   findPublishedPostById,
   updatePostById,
+  updatePostPublishedById,
 } from "@/repositories/post.repository.js";
 import type { PostBody, CreatePostInput } from "@/types/post.types.js";
 import type { RequestHandler } from "express";
@@ -53,6 +54,16 @@ export const updatePost: RequestHandler = async (req, res) => {
     published,
   };
   const postId = await updatePostById(input);
+  res.json({ postId });
+};
+
+export const patchPostPublished: RequestHandler = async (req, res) => {
+  const { published } = req.body as PostBody;
+  const input = {
+    id: Number(req.params.postId),
+    published,
+  };
+  const postId = await updatePostPublishedById(input);
   res.json({ postId });
 };
 

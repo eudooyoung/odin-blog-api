@@ -9,3 +9,8 @@ export type CreatePostInput = PostBody & {
 export type UpdatePostInput = PostBody & {
   id: number;
 };
+
+export type UpdatePostPublishedInput = {
+  id: number;
+  published: boolean;
+};
