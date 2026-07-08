@@ -2,11 +2,17 @@ import {
   createPostByUserId,
   deletePostById,
   findAllPosts,
+  findAllPublishedPosts,
   findPostById,
   updatePostById,
 } from "@/repositories/post.repository.js";
 import type { PostBody, CreatePostInput } from "@/types/post.types.js";
 import type { RequestHandler } from "express";
+
+export const getAllPublishedPosts: RequestHandler = async (req, res) => {
+  const posts = await findAllPublishedPosts();
+  res.json(posts);
+};
 
 export const getAllPosts: RequestHandler = async (req, res) => {
   const posts = await findAllPosts();

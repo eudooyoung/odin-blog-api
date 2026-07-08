@@ -3,25 +3,16 @@ import {
   getCommentsByPostId,
 } from "@/controllers/comment.controller.js";
 import {
-  deletePost,
-  getAllPosts,
+  getAllPublishedPosts,
   getPost,
-  insertPost,
-  updatePost,
 } from "@/controllers/post.controller.js";
-import { requireAdmin, requireAuth } from "@/middlewares/auth.middleware.js";
+import { requireAuth } from "@/middlewares/auth.middleware.js";
 import { Router } from "express";
 
 const postRouter = Router();
-postRouter.get("/", getAllPosts);
-postRouter.get("/:postId", getPost);
-
 postRouter
-  .post("/", requireAdmin, insertPost)
-  .put("/:postId", requireAdmin, updatePost)
-  .delete("/:postId", requireAdmin, deletePost);
-
-postRouter
+  .get("/", getAllPublishedPosts)
+  .get("/:postId", getPost)
   .post("/:postId/comments", requireAuth, createComment)
   .get("/:postId/comments", getCommentsByPostId);
 
