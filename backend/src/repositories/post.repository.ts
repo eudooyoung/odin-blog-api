@@ -10,12 +10,19 @@ export const findAllPublishedPosts = async () => {
     where: {
       published: true,
     },
+    orderBy: {
+      id: "desc",
+    },
   });
   return posts;
 };
 
 export const findAllPosts = async () => {
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
   return posts;
 };
 
