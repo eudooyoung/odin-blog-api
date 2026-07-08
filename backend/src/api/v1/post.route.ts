@@ -13,7 +13,7 @@ const postRouter = Router();
 postRouter
   .get("/", getAllPublishedPosts)
   .get("/:postId", getPost)
-  .post("/:postId/comments", requireAuth, createComment)
-  .get("/:postId/comments", getCommentsByPostId);
+  .get("/:postId/comments", getCommentsByPostId)
+  .post("/:postId/comments", requireAuth, createComment);
 
 export default postRouter;

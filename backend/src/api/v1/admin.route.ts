@@ -26,6 +26,7 @@ adminRouter
   .use(requireAdmin)
 
   .get("/posts", getAllPosts)
+  .post("/posts", insertPost)
   .put("/posts/:postId", updatePost)
   .delete("/posts/:postId", deletePost)
 
