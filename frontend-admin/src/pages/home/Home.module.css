@@ -1,0 +1,12 @@
+.home {
+  flex: 1;
+
+  display: grid;
+  grid-template-rows: 5rem auto;
+}
+
+.homeHeader {
+  align-self: center;
+  padding-left: 1rem;
+  letter-spacing: -0.05rem;
+}

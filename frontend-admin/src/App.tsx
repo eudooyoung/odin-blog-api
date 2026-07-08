@@ -1,18 +1,17 @@
-import { Footer } from "./components/Footer.tsx";
-import { Header } from "./components/Header.tsx";
-import { Main } from "./components/Main.tsx";
-import { AuthProvider } from "./context/AuthProvider.tsx";
+import Footer from "./components/footer/Footer.tsx";
+import Header from "./components/header/Header.tsx";
+import Main from "./components/main/Main.tsx";
+import { AuthProvider } from "@/context/AuthProvider.tsx";
+import styles from "./App.module.css";
 
-function App() {
+export default function App() {
   return (
-    <>
+    <div className={styles.app}>
       <AuthProvider>
         <Header />
         <Main />
         <Footer />
       </AuthProvider>
-    </>
+    </div>
   );
 }
-
-export default App;

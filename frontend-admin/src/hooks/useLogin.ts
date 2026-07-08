@@ -13,7 +13,7 @@ export const useLogin = () => {
       setLoginLoading(true);
       setLoginError(null);
 
-      const response = await fetch(`${env.apiBaseUrl}/auth/admin/login`, {
+      const response = await fetch(`${env.apiBaseUrl}/admin/auth/login`, {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -38,6 +38,7 @@ export const useLogin = () => {
       if (error instanceof Error) {
         setLoginError(error);
       }
+      return false;
     } finally {
       setLoginLoading(false);
     }

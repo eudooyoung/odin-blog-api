@@ -1,0 +1,35 @@
+.signupForm {
+  justify-self: center;
+
+  height: 28rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 2px black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+}
+
+.signupForm > * {
+  width: 80%;
+}
+
+.signupField {
+  min-height: 4rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.signupInput {
+  min-height: 2rem;
+}
+
+.signupButton {
+  margin-top: 0.5rem;
+  min-height: 2rem;
+}
