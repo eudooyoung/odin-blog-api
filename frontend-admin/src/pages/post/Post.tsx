@@ -21,7 +21,7 @@ export const Post = () => {
   return (
     <section className={styles.post}>
       {post && <PostView post={post} />}
-      <CommentInput postId={postId} refetchComments={refetchComments} />
+      {/* <CommentInput postId={postId} refetchComments={refetchComments} /> */}
       {/* {commentsLoading && <Loading />} */}
       {commentsError && <ErrorMessage error={commentsError} />}
       <Comments

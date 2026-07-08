@@ -1,5 +1,5 @@
 import { env } from "@/lib/env.ts";
-import type { Posts } from "@/types/types.ts";
+import type { Posts } from "@/types/post.types.ts";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./useAuthContext.ts";
 
@@ -8,6 +8,38 @@ export const usePosts = () => {
   const [postsError, setPostsError] = useState<Error | null>(null);
   const [postsLoading, setPostsLoading] = useState(true);
   const { token } = useAuthContext();
+
+  const refetchPosts = async () => {
+    setPostsLoading(true);
+    setPostsError(null);
+
+    try {
+      const response = await fetch(`${env.apiBaseUrl}/admin/posts`, {
+        method: "get",
+        headers: token ? { Authorization: token } : {},
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error.message);
+      }
+
+      const data = await response.json();
+      setPosts(data);
+
+      return true;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          return false;
+        }
+        setPostsError(error);
+      }
+      return false;
+    } finally {
+      setPostsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -44,7 +76,7 @@ export const usePosts = () => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [token]);
 
-  return { posts, postsError, postsLoading };
+  return { posts, postsError, postsLoading, refetchPosts };
 };
