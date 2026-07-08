@@ -68,7 +68,7 @@ Authorization: {{userToken}}
 GET {{baseUrl}}/posts
 
 ### Get a post
-GET {{baseUrl}}/posts/2
+GET {{baseUrl}}/posts/4
 
 ### Create post
 POST {{baseUrl}}/posts
