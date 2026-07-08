@@ -1,0 +1,17 @@
+.commentView {
+  min-height: 5rem;
+  justify-content: space-around;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.commentButtons {
+  display: flex;
+  column-gap: 0.5rem;
+}

@@ -1,0 +1,31 @@
+.loginForm {
+  justify-self: center;
+
+  height: 15rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 2px black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.loginForm > * {
+  min-height: 2rem;
+  width: 80%;
+}
+
+.loginField {
+  display: flex;
+  justify-content: space-between;
+}
+
+.loginLabel {
+  align-self: center;
+}
+
+.loginInput {
+  width: 80%;
+}

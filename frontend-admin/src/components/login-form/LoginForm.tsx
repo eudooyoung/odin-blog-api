@@ -6,6 +6,7 @@ import {
   type SubmitEventHandler,
 } from "react";
 import { useNavigate } from "react-router";
+import styles from "./LoginForm.module.css";
 
 const LoginForm = () => {
   const [form, setForm] = useState<LoginBody>({ username: "", password: "" });
@@ -29,10 +30,16 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={loginHandler} aria-label="login">
-      <div>
-        <label htmlFor="username">Username</label>
+    <form
+      className={styles.loginForm}
+      onSubmit={loginHandler}
+      aria-label="login">
+      <div className={styles.loginField}>
+        <label className={styles.loginLabel} htmlFor="username">
+          Username
+        </label>
         <input
+          className={styles.loginInput}
           type="email"
           name="username"
           id="username"
@@ -42,9 +49,12 @@ const LoginForm = () => {
           required
         />
       </div>
-      <div>
-        <label htmlFor="password">Password</label>
+      <div className={styles.loginField}>
+        <label className={styles.loginLabel} htmlFor="password">
+          Password
+        </label>
         <input
+          className={styles.loginInput}
           type="password"
           name="password"
           id="password"
@@ -53,7 +63,10 @@ const LoginForm = () => {
           required
         />
       </div>
-      <button type="submit" disabled={loginLoading}>
+      <button
+        className={styles.loginButton}
+        type="submit"
+        disabled={loginLoading}>
         Login
       </button>
       {loginError && <p>{loginError.message}</p>}

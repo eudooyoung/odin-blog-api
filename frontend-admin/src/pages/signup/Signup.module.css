@@ -1,0 +1,11 @@
+.signup {
+  flex: 1;
+
+  display: grid;
+  grid-template-rows: 5rem auto;
+}
+
+.signupHeader {
+  align-self: center;
+  padding-left: 1rem;
+}
