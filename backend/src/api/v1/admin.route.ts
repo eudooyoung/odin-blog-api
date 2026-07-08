@@ -1,6 +1,7 @@
 import {
   deletePost,
-  getAllPosts,
+  getAllPostsAdmin,
+  getPostAdmin,
   insertPost,
   updatePost,
 } from "@/controllers/post.controller.js";
@@ -25,7 +26,8 @@ adminRouter.post(
 adminRouter
   .use(requireAdmin)
 
-  .get("/posts", getAllPosts)
+  .get("/posts", getAllPostsAdmin)
+  .get("/posts/:postId", getPostAdmin)
   .post("/posts", insertPost)
   .put("/posts/:postId", updatePost)
   .delete("/posts/:postId", deletePost)

@@ -17,3 +17,7 @@ Content-Type: application/json
 ### Get all posts
 GET {{baseUrl}}/posts
 Authorization: {{adminToken}}
+
+### Get a post
+GET {{baseUrl}}/posts/3
+Authorization: {{adminToken}}

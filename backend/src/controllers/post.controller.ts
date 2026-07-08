@@ -4,19 +4,32 @@ import {
   findAllPosts,
   findAllPublishedPosts,
   findPostById,
+  findPublishedPostById,
   updatePostById,
 } from "@/repositories/post.repository.js";
 import type { PostBody, CreatePostInput } from "@/types/post.types.js";
 import type { RequestHandler } from "express";
 
-export const getAllPublishedPosts: RequestHandler = async (req, res) => {
+export const getAllPosts: RequestHandler = async (req, res) => {
   const posts = await findAllPublishedPosts();
   res.json(posts);
 };
 
-export const getAllPosts: RequestHandler = async (req, res) => {
+export const getAllPostsAdmin: RequestHandler = async (req, res) => {
   const posts = await findAllPosts();
   res.json(posts);
+};
+
+export const getPost: RequestHandler = async (req, res) => {
+  const postId = Number(req.params.postId);
+  const post = await findPublishedPostById(postId);
+  res.json(post);
+};
+
+export const getPostAdmin: RequestHandler = async (req, res) => {
+  const postId = Number(req.params.postId);
+  const post = await findPostById(postId);
+  res.json(post);
 };
 
 export const insertPost: RequestHandler = async (req, res) => {
@@ -29,12 +42,6 @@ export const insertPost: RequestHandler = async (req, res) => {
   };
   const postId = await createPostByUserId(input);
   res.status(201).json({ postId });
-};
-
-export const getPost: RequestHandler = async (req, res) => {
-  const postId = Number(req.params.postId);
-  const post = await findPostById(postId);
-  res.json(post);
 };
 
 export const updatePost: RequestHandler = async (req, res) => {
