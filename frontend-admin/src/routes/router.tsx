@@ -4,6 +4,7 @@ import Home from "@/pages/home/Home.tsx";
 import Login from "@/pages/login/Login.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import { Post } from "@/pages/post/Post.tsx";
+import { NewPost } from "@/pages/new-post/NewPost.tsx";
 
 const routes = [
   {
@@ -15,6 +16,7 @@ const routes = [
         element: <ProtectedRoute />,
         children: [
           { index: true, element: <Home /> },
+          { path: "new-post", element: <NewPost /> },
           { path: "posts/:postId", element: <Post /> },
         ],
       },

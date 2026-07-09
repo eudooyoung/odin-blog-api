@@ -9,6 +9,12 @@ const Posts = () => {
   const { publish, publishLoading, publishError } = usePublish();
   const { unpublish, unpublishLoading, unpublishError } = useUnpublish();
 
+  const getTextFromContent = (raw: string) => {
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(raw, "text/html");
+    return dom.body.textContent;
+  };
+
   const onPublish = async (postId: number) => {
     const success = await publish(postId);
     if (success) {
@@ -25,7 +31,7 @@ const Posts = () => {
 
   return (
     <>
-      {/* {postsLoading && <span>loading...</span>} */}
+      {postsLoading && <span>loading...</span>}
       {postsError && <span>{postsError.message}</span>}
       {posts && (
         <div className={styles.posts}>
@@ -34,7 +40,9 @@ const Posts = () => {
               <h4 className={styles.postThumbnailHeader}>
                 <Link to={`/posts/${post.id}`}>{post.title}</Link>
               </h4>
-              <p className={styles.postThumbnailContent}>{post.content}</p>
+              <p className={styles.postThumbnailContent}>
+                {getTextFromContent(post.content)}
+              </p>
               <p className={styles.postThumbnailDate}>
                 {new Intl.DateTimeFormat("ko-KR", {
                   dateStyle: "short",

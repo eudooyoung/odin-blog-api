@@ -16,3 +16,9 @@ export type Posts = {
   published: boolean;
   createdAt: string;
 }[];
+
+export type PostBody = {
+  title: string;
+  content: string;
+  published: boolean;
+};

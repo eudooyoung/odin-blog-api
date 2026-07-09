@@ -61,14 +61,17 @@ export const useCommentAction = (postId: number) => {
     setCommentError(null);
 
     try {
-      const response = await fetch(`${env.apiBaseUrl}/comments/${commentId}`, {
-        method: "put",
-        headers: {
-          ...(token && { Authorization: token }),
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${env.apiBaseUrl}/admin/comments/${commentId}`,
+        {
+          method: "put",
+          headers: {
+            ...(token && { Authorization: token }),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newComment),
         },
-        body: JSON.stringify(newComment),
-      });
+      );
 
       if (!response.ok) {
         if (response.status === 400) {
@@ -97,12 +100,15 @@ export const useCommentAction = (postId: number) => {
     setCommentError(null);
 
     try {
-      const response = await fetch(`${env.apiBaseUrl}/comments/${commentId}`, {
-        method: "delete",
-        headers: {
-          ...(token && { Authorization: token }),
+      const response = await fetch(
+        `${env.apiBaseUrl}/admin/comments/${commentId}`,
+        {
+          method: "delete",
+          headers: {
+            ...(token && { Authorization: token }),
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const { error } = await response.json();
