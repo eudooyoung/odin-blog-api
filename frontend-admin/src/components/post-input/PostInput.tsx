@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { ErrorMessage } from "../ErrorMessage.tsx";
 import { Loading } from "../Loading.tsx";
+import styles from "./PostInput.module.css";
 
 export const PostInput = () => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
@@ -41,18 +42,22 @@ export const PostInput = () => {
   };
 
   return (
-    <form onSubmit={savePostHandler}>
-      <label htmlFor="title">title</label>
+    <form className={styles.postInputForm} onSubmit={savePostHandler}>
+      <label htmlFor="title" hidden>
+        title
+      </label>
       <input
+        className={styles.postInputTitle}
         type="text"
         name="title"
         id="title"
         onChange={(e) => {
           setTitle(e.target.value);
         }}
+        placeholder="Enter title for new post"
         required
       />
-      {editorLoading && <Loading />}
+      {editorLoading && <div className={styles.loading}>...Loading</div>}
       <Editor
         apiKey={env.tinyMceApiKey}
         onInit={(evt, editor) => {
@@ -94,13 +99,15 @@ export const PostInput = () => {
         onChange={contentChangeHandler}
       />
 
-      <label htmlFor="published">published</label>
-      <input
-        onChange={publishedChangeHandler}
-        type="checkbox"
-        name="published"
-        id="published"
-      />
+      <div>
+        <label htmlFor="published">published</label>
+        <input
+          onChange={publishedChangeHandler}
+          type="checkbox"
+          name="published"
+          id="published"
+        />
+      </div>
       <button disabled={createPostLoading}>Save</button>
       {createPostError && <ErrorMessage error={createPostError} />}
     </form>

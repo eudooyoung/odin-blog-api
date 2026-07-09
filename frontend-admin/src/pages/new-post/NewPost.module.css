@@ -1,0 +1,11 @@
+.newPost {
+  flex: 1;
+
+  display: grid;
+  grid-template-rows: 5rem auto;
+}
+
+.newPostHeader {
+  align-self: center;
+  padding: 0 1rem;
+}

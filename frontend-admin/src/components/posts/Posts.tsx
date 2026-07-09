@@ -49,7 +49,7 @@ const Posts = () => {
                 }).format(new Date(post.createdAt))}
               </p>
               {post.published ? (
-                <div>
+                <div className={styles.postThumbnailPublishedWrapper}>
                   <p>Published</p>
                   <button
                     disabled={publishLoading}
@@ -59,7 +59,7 @@ const Posts = () => {
                   {publishError && <p>{publishError.message}</p>}
                 </div>
               ) : (
-                <div>
+                <div className={styles.postThumbnailPublishedWrapper}>
                   <p>Not published</p>
                   <button
                     disabled={unpublishLoading}

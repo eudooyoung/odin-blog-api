@@ -1,0 +1,15 @@
+.postInputForm {
+  justify-self: center;
+
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 3rem;
+
+  display: grid;
+  grid-template-rows: 3rem auto 2rem 2rem;
+}
+
+.loading {
+  height: 800px;
+  text-align: center;
+}
