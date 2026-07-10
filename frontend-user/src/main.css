@@ -31,9 +31,6 @@ h5 {
 }
 
 a {
-  text-decoration: none;
-}
-
-a:visited {
   color: inherit;
+  text-decoration: none;
 }

@@ -1,5 +1,6 @@
 .comments {
   flex: 2;
+  flex-basis: 5rem;
 
   width: 100%;
 

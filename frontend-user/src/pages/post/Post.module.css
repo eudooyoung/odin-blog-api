@@ -5,3 +5,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+.backButton {
+  margin: 1rem;
+  align-self: flex-start;
+}
