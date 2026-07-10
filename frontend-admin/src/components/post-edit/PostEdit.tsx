@@ -1,4 +1,3 @@
-import { useCreatePost } from "@/hooks/useCreatePost.ts";
 import { env } from "@/lib/env.ts";
 import { Editor } from "@tinymce/tinymce-react";
 import {
@@ -7,18 +6,29 @@ import {
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
-import { useNavigate } from "react-router";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { ErrorMessage } from "../ErrorMessage.tsx";
-import styles from "./PostInput.module.css";
+import styles from "./PostEdit.module.css";
+import type { Post } from "@/types/post.types.ts";
+import DOMPurify from "dompurify";
+import { useUpdatePost } from "@/hooks/useUpdatePost.ts";
 
-export const PostInput = () => {
+export const PostEdit = ({
+  post,
+  onCancel,
+  onUpdate,
+}: {
+  post: Post;
+  onCancel: VoidFunction;
+  onUpdate: VoidFunction;
+}) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const { createPost, createPostLoading, createPostError } = useCreatePost();
-  const navigate = useNavigate();
-  const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
-  const [published, setPublished] = useState(false);
+  const { updatePost, updatePostLoading, updatePostError } = useUpdatePost(
+    post.id,
+  );
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(DOMPurify.sanitize(post.content));
+  const [published, setPublished] = useState(post.published);
   const [editorLoading, setEditorLoading] = useState(true);
 
   const contentChangeHandler = () => {
@@ -32,16 +42,16 @@ export const PostInput = () => {
     setPublished(checked);
   };
 
-  const savePostHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
+  const updatePostHandler: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const success = await createPost({ title, content, published });
+    const success = await updatePost({ title, content, published });
     if (success) {
-      navigate("/");
+      onUpdate();
     }
   };
 
   return (
-    <form className={styles.postInputForm} onSubmit={savePostHandler}>
+    <form className={styles.postInputForm} onSubmit={updatePostHandler}>
       <label htmlFor="title" hidden>
         title
       </label>
@@ -54,6 +64,7 @@ export const PostInput = () => {
           setTitle(e.target.value);
         }}
         placeholder="Enter title for new post"
+        value={title}
         required
       />
       {editorLoading && <div className={styles.loading}>...Loading</div>}
@@ -63,7 +74,7 @@ export const PostInput = () => {
           setEditorLoading(false);
           editorRef.current = editor;
         }}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        initialValue={content}
         init={{
           height: 500,
           menubar: false,
@@ -105,10 +116,16 @@ export const PostInput = () => {
           type="checkbox"
           name="published"
           id="published"
+          checked={published}
         />
       </div>
-      <button disabled={createPostLoading}>Save</button>
-      {createPostError && <ErrorMessage error={createPostError} />}
+      <div className={styles.buttonContainer}>
+        <button className={styles.cancelButton} onClick={onCancel}>
+          Cancel
+        </button>
+        <button disabled={updatePostLoading}>Save</button>
+      </div>
+      {updatePostError && <ErrorMessage error={updatePostError} />}
     </form>
   );
 };

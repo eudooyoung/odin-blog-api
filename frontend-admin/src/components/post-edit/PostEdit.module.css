@@ -1,0 +1,40 @@
+.postInputForm {
+  justify-self: center;
+
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 3rem;
+
+  display: grid;
+  grid-template-rows: 3rem auto 2rem 2rem;
+}
+
+.loading {
+  height: 500px;
+  text-align: center;
+}
+
+.published {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1rem;
+}
+
+.buttonContainer {
+  display: flex;
+  column-gap: 1rem;
+}
+
+.buttonContainer * {
+  flex: 1;
+}
+
+.cancelButton {
+  background-color: inherit;
+  border: 1px solid hsl(202, 10%, 65%);
+}
+
+.cancelButton:hover {
+  background-color: hsl(202, 10%, 85%);
+}
