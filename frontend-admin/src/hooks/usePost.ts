@@ -51,5 +51,36 @@ export const usePost = (postId: number) => {
       abortController.abort();
     };
   }, [postId, token]);
-  return { post, postLoading, postError };
+
+  const refetchPost = async () => {
+    setPostLoading(true);
+    setPostError(null);
+
+    try {
+      const response = await fetch(`${env.apiBaseUrl}/admin/posts/${postId}`, {
+        method: "get",
+        headers: token ? { Authorization: token } : {},
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        setPostError(error);
+        return;
+      }
+
+      const post = await response.json();
+      setPost(post);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+        setPostError(error);
+      }
+    } finally {
+      setPostLoading(false);
+    }
+  };
+
+  return { post, postLoading, postError, refetchPost };
 };

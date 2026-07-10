@@ -2,7 +2,13 @@ import type { Post } from "@/types/post.types.ts";
 import styles from "./PostView.module.css";
 import DOMPurify from "dompurify";
 
-export const PostView = ({ post }: { post: Post }) => {
+export const PostView = ({
+  post,
+  onEdit,
+}: {
+  post: Post;
+  onEdit: VoidFunction;
+}) => {
   const sanitizeContent = (raw: string) => {
     const sanitized = DOMPurify.sanitize(raw);
     return { __html: sanitized };
@@ -18,6 +24,9 @@ export const PostView = ({ post }: { post: Post }) => {
           }).format(new Date(post.createdAt))}
         </span>
         <span className={styles.postAuthor}>{post.author.displayName}</span>
+        <button onClick={onEdit} className={styles.postEditButton}>
+          Edit
+        </button>
       </div>
       <p
         className={styles.postContent}
