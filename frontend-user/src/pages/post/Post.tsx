@@ -14,7 +14,7 @@ export const Post = () => {
   const { comments, commentsLoading, commentsError, refetchComments } =
     useComments(postId);
 
-  // if (postLoading) return <Loading />;
+  if (postLoading) return <Loading />;
   if (postError) return <ErrorMessage error={postError} />;
   if (!post) return;
 
@@ -22,7 +22,7 @@ export const Post = () => {
     <section className={styles.post}>
       {post && <PostView post={post} />}
       <CommentInput postId={postId} refetchComments={refetchComments} />
-      {/* {commentsLoading && <Loading />} */}
+      {commentsLoading && <Loading />}
       {commentsError && <ErrorMessage error={commentsError} />}
       <Comments
         postId={postId}

@@ -1,4 +1,3 @@
-import { useAuthContext } from "@/hooks/useAuthContext.ts";
 import { useCommentAction } from "@/hooks/useCommentAction.ts";
 import type { CommentViewProps } from "@/types/comment.types.ts";
 import { ErrorMessage } from "../ErrorMessage.tsx";
@@ -11,7 +10,6 @@ export const CommentView = ({
   comment,
   refetchComments,
 }: CommentViewProps) => {
-  const { user } = useAuthContext();
   const { deleteComment, commentError, commentLoading } =
     useCommentAction(postId);
 
