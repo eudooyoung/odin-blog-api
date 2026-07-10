@@ -31,7 +31,10 @@
   column-gap: 1rem;
 }
 
-.postEditButton {
+.buttonContainer {
   margin-left: auto;
-  align-self: flex-start;
+
+  display: flex;
+  align-items: flex-start;
+  column-gap: 1rem;
 }

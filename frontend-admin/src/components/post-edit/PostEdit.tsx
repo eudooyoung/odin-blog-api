@@ -70,7 +70,7 @@ export const PostEdit = ({
       {editorLoading && <div className={styles.loading}>...Loading</div>}
       <Editor
         apiKey={env.tinyMceApiKey}
-        onInit={(evt, editor) => {
+        onInit={(_, editor) => {
           setEditorLoading(false);
           editorRef.current = editor;
         }}
