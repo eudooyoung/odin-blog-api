@@ -2,8 +2,6 @@
   align-self: start;
   flex: 3;
 
-  min-height: 30rem;
-
   display: flex;
   flex-direction: column;
 }

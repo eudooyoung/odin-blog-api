@@ -1,4 +1,10 @@
 .footer {
+  background-color: hsl(202, 15%, 87%);
+  width: 100%;
+  max-width: 1000px;
+
   display: flex;
+  column-gap: 0.3rem;
+  justify-content: center;
   align-items: center;
 }
