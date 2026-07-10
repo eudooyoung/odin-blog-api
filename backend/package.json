@@ -41,7 +41,7 @@
     "typescript-eslint": "^8.59.4"
   },
   "scripts": {
-    "build": "prisma generate && rm -rf dist/ && tsc -p tsconfig.build.json && cp -r src/views dist/src/ && cp -r src/public dist/src/",
+    "build": "prisma generate && rm -rf dist/ && tsc -p tsconfig.build.json",
     "start": "tsx dist/src/app.js",
     "dev": "DB_ENV=development tsx --watch src/app.ts",
     "prod": "DB_ENV=production tsx --watch src/app.ts"
