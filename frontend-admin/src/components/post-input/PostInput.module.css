@@ -1,0 +1,22 @@
+.postInputForm {
+  justify-self: center;
+
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 3rem;
+
+  display: grid;
+  grid-template-rows: 3rem auto 2rem 2rem;
+}
+
+.loading {
+  height: 500px;
+  text-align: center;
+}
+
+.published {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1rem;
+}

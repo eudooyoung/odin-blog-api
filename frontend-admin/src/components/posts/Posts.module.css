@@ -7,7 +7,7 @@
 .postThumbnail {
   padding: 1rem 0;
   min-height: 9rem;
-  box-shadow: 0 0 1px black;
+  box-shadow: 0 0 2px hsl(202, 10%, 35%);
 
   display: flex;
   flex-direction: column;
@@ -35,6 +35,17 @@
   overflow: hidden;
 }
 
+.postThumbnailFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
 .postThumbnailDate {
   padding-left: 1rem;
+}
+
+.postThumbnailPublishedWrapper {
+  padding: 0 1rem;
+  display: flex;
+  column-gap: 1rem;
 }

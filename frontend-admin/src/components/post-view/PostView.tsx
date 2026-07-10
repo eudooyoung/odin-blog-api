@@ -1,7 +1,13 @@
-import type { Post } from "@/types/types.ts";
+import type { Post } from "@/types/post.types.ts";
 import styles from "./PostView.module.css";
+import DOMPurify from "dompurify";
 
 export const PostView = ({ post }: { post: Post }) => {
+  const sanitizeContent = (raw: string) => {
+    const sanitized = DOMPurify.sanitize(raw);
+    return { __html: sanitized };
+  };
+
   return (
     <article className={styles.postView}>
       <h2 className={styles.postTitle}>{post.title}</h2>
@@ -13,7 +19,9 @@ export const PostView = ({ post }: { post: Post }) => {
         </span>
         <span className={styles.postAuthor}>{post.author.displayName}</span>
       </div>
-      <p className={styles.postContent}>{post.content}</p>
+      <p
+        className={styles.postContent}
+        dangerouslySetInnerHTML={sanitizeContent(post.content)}></p>
     </article>
   );
 };

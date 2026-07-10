@@ -1,5 +1,5 @@
 import { env } from "@/lib/env.ts";
-import type { Post } from "@/types/types.ts";
+import type { Post } from "@/types/post.types.ts";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./useAuthContext.ts";
 
@@ -50,6 +50,6 @@ export const usePost = (postId: number) => {
     return () => {
       abortController.abort();
     };
-  }, [postId]);
+  }, [postId, token]);
   return { post, postLoading, postError };
 };

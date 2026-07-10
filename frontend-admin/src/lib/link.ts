@@ -6,5 +6,5 @@ export const publicLinks: Links = [...common, { name: "Login", to: "/login" }];
 
 export const authLinks: Links = [
   ...common,
-  { name: "Profile", to: "/profile" },
+  { name: "New Post", to: "/new-post" },
 ];

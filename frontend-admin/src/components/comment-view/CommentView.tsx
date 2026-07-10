@@ -27,21 +27,17 @@ export const CommentView = ({
       <header className={styles.commentHeader}>
         <h4>{comment.author.displayName}</h4>
         <div className={styles.commentButtons}>
-          {user?.id === comment.author.id && (
-            <>
-              {editingCommentId !== comment.id && (
-                <button onClick={() => setEditingCommentId(comment.id)}>
-                  edit
-                </button>
-              )}
-              <button
-                onClick={() => deleteCommentHandler(comment.id)}
-                disabled={commentLoading}>
-                delete
-              </button>
-              {commentError && <ErrorMessage error={commentError} />}
-            </>
+          {editingCommentId !== comment.id && (
+            <button onClick={() => setEditingCommentId(comment.id)}>
+              edit
+            </button>
           )}
+          <button
+            onClick={() => deleteCommentHandler(comment.id)}
+            disabled={commentLoading}>
+            delete
+          </button>
+          {commentError && <ErrorMessage error={commentError} />}
         </div>
       </header>
       <p>{comment.content}</p>
