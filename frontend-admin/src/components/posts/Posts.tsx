@@ -43,32 +43,34 @@ const Posts = () => {
               <p className={styles.postThumbnailContent}>
                 {getTextFromContent(post.content)}
               </p>
-              <p className={styles.postThumbnailDate}>
-                {new Intl.DateTimeFormat("ko-KR", {
-                  dateStyle: "short",
-                }).format(new Date(post.createdAt))}
-              </p>
-              {post.published ? (
-                <div className={styles.postThumbnailPublishedWrapper}>
-                  <p>Published</p>
-                  <button
-                    disabled={publishLoading}
-                    onClick={() => onUnpublish(post.id)}>
-                    Unpublish
-                  </button>
-                  {publishError && <p>{publishError.message}</p>}
-                </div>
-              ) : (
-                <div className={styles.postThumbnailPublishedWrapper}>
-                  <p>Not published</p>
-                  <button
-                    disabled={unpublishLoading}
-                    onClick={() => onPublish(post.id)}>
-                    Publish
-                  </button>
-                  {unpublishError && <p>{unpublishError.message}</p>}
-                </div>
-              )}
+              <div className={styles.postThumbnailFooter}>
+                <p className={styles.postThumbnailDate}>
+                  {new Intl.DateTimeFormat("ko-KR", {
+                    dateStyle: "short",
+                  }).format(new Date(post.createdAt))}
+                </p>
+                {post.published ? (
+                  <div className={styles.postThumbnailPublishedWrapper}>
+                    <p>Published</p>
+                    <button
+                      disabled={publishLoading}
+                      onClick={() => onUnpublish(post.id)}>
+                      Unpublish
+                    </button>
+                    {publishError && <p>{publishError.message}</p>}
+                  </div>
+                ) : (
+                  <div className={styles.postThumbnailPublishedWrapper}>
+                    <p>Not published</p>
+                    <button
+                      disabled={unpublishLoading}
+                      onClick={() => onPublish(post.id)}>
+                      Publish
+                    </button>
+                    {unpublishError && <p>{unpublishError.message}</p>}
+                  </div>
+                )}
+              </div>
             </section>
           ))}
         </div>

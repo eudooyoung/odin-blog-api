@@ -10,7 +10,6 @@ import {
 import { useNavigate } from "react-router";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { ErrorMessage } from "../ErrorMessage.tsx";
-import { Loading } from "../Loading.tsx";
 import styles from "./PostInput.module.css";
 
 export const PostInput = () => {
@@ -99,8 +98,8 @@ export const PostInput = () => {
         onChange={contentChangeHandler}
       />
 
-      <div>
-        <label htmlFor="published">published</label>
+      <div className={styles.published}>
+        <label htmlFor="published">Publish</label>
         <input
           onChange={publishedChangeHandler}
           type="checkbox"
