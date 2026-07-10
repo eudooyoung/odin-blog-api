@@ -7,7 +7,9 @@ const NavBar = ({ links }: { links: Links }) => {
     <nav className={styles.navLinks}>
       {links.map((link, idx) => (
         <NavLink
-          className={({ isActive }) => (isActive ? styles.active : "")}
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
           key={idx}
           to={link.to}>
           {link.name}
