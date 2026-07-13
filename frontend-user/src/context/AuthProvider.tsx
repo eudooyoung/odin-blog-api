@@ -4,8 +4,8 @@ import { useAuthState } from "../hooks/useAuthState.ts";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = useAuthState();
-  if (auth.userLoading) {
-    return null;
-  }
+  // if (auth.userLoading) {
+  //   return null;
+  // }
   return <AuthContext value={auth}>{children}</AuthContext>;
 };
